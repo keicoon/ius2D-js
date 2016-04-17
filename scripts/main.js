@@ -13,5 +13,5 @@ const logic = require('./logic');
     if (gl) console.log('webgl initialize succ!')
     else console.log('webgl initialize fail!')
 
-    logic(gl);
+    logic(gl, cvs);
 }
