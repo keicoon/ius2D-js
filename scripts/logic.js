@@ -1,4 +1,5 @@
 const render = require('./render');
+const fps = require('./fps');
 
 module.exports = (gl, cvs)=>{
     
@@ -7,5 +8,10 @@ module.exports = (gl, cvs)=>{
     
     if(cvs)  cvs.width='450', cvs.height='300'
     gl.viewport(0, 0, parseInt(cvs.width), +parseInt(cvs.height));
-    setInterval(()=>{render(gl, program, buffer);},16)
+    setInterval(()=>{
+        console.log('fps: ', fps.Getfps());
+        let delta = fps.Tickfps();
+        // update();
+        render(gl, program, buffer);
+    },33)
 }
