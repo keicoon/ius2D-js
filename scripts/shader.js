@@ -18,6 +18,8 @@ module.exports = (gl) => {
     program.aVertexPosition = gl.getAttribLocation(program, "aVertexPosition");
     program.uRotation = gl.getUniformLocation(program, 'uRotation')
     program.uColor = gl.getUniformLocation(program, 'uColor')
+    program.uPixelMatrix = gl.getUniformLocation(program, "uPixelMatrix")
+    program.uScale = gl.getUniformLocation(program, "uScale")
     
     return program;
 }

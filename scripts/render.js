@@ -1,7 +1,7 @@
 let rotations = [0, 0, 0];
-module.exports = (gl, program, buffer)=>{
-    rotations[0] += 0.1
-    rotations[1] += 0.1
+let scales = [100,100,1];
+
+module.exports = (gl, program, buffer, logic)=>{
     rotations[2] += 0.1
     
     gl.clearColor(0, 0, 0, 1)
@@ -12,6 +12,8 @@ module.exports = (gl, program, buffer)=>{
     gl.vertexAttribPointer(program.aVertexPosition, buffer.itemSize, gl.FLOAT, false, 0, 0);
     
     gl.uniform3fv(program.uRotation, rotations)
+    gl.uniformMatrix4fv(program.uPixelMatrix, false, logic.pixelMatrix)
+    gl.uniform3fv(program.uScale, scales)
     gl.uniform3fv(program.uColor, [Math.random(), Math.random(), Math.random()])
     
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, buffer.numItem);
