@@ -1,6 +1,8 @@
 module.exports = "" +
     "attribute vec3 aVertexPosition;" +
     "uniform vec3 uRotation;" +
+    "uniform vec3 uColor;" +
+    "varying vec3 vColor;" +
     'mat4 rotationMTX(vec3 t)' +
     '{' +
     '   float s = sin(t[0]);float c = cos(t[0]);' +
@@ -11,4 +13,5 @@ module.exports = "" +
     '}' +
     "void main(void) {" +
     " gl_Position =rotationMTX(uRotation)* vec4(aVertexPosition, 1.0);" +
+    " vColor = uColor;" +
     "}"

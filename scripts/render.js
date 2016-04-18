@@ -12,6 +12,7 @@ module.exports = (gl, program, buffer)=>{
     gl.vertexAttribPointer(program.aVertexPosition, buffer.itemSize, gl.FLOAT, false, 0, 0);
     
     gl.uniform3fv(program.uRotation, rotations)
+    gl.uniform3fv(program.uColor, [Math.random(), Math.random(), Math.random()])
     
     gl.drawArrays(gl.TRIANGLES, 0, buffer.numItem);
 }
