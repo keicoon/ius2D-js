@@ -1,33 +1,40 @@
-const render = require('./render');
 const fps = require('./fps');
-const img = require('./img');
+
+const loadingscene = require('./loadingscene');
 
 module.exports = (gl, cvs)=>{
-    
-    let buffer = require('./buffer')(gl);
-    let program = require('./shader')(gl);
-    
     let viewportWidth, viewportHright;
     if(cvs)  viewportWidth = cvs.width='500', viewportHright = cvs.height='500'
     gl.viewport(0, 0, parseInt(cvs.width), +parseInt(cvs.height));
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND)
     
-    img.add(gl, 'test', 'test.png')
+    //initialize
     let logic = {
-    'pixelMatrix': [
-        2/viewportWidth,0,0,0,
-        0,2/viewportHright,0,0,
-        0,0,0,0,
-        0,0,0,1
+        'gl': gl,
+        'program': require('./shader')(gl),
+        'buffer': require('./buffer')(gl),
+        'pixelMatrix': [
+            2/viewportWidth,0,0,0,
+            0,2/viewportHright,0,0,
+            0,0,0,0,
+            0,0,0,1
         ],
-    'img': img
+        'ChangeScene': (prevScene, aftrScene) => {
+            //prevScene.Destroy();
+            prevScene = null;
+            // aftrScne.Initialize();
+            currentScene = aftrScene;
+        }
     };
+    
+    let currentScene = new loadingscene(logic);
     
     setInterval(()=>{
         // console.log('fps: ', fps.Getfps());
         let delta = fps.Tickfps();
-        // update();
-        render(gl, program, buffer.vertex, buffer.uv, logic);
+        
+        currentScene.Update();
+        currentScene.Render();
     },33)
 }
