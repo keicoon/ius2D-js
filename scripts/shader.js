@@ -10,12 +10,13 @@ module.exports = (gl) => {
     gl.shaderSource(fragmentShader, fragmentShaderStr)
     gl.compileShader(fragmentShader)
     
-    let firstProgram = gl.createProgram()
-    gl.attachShader(firstProgram, vertexShader)
-    gl.attachShader(firstProgram, fragmentShader)
-    gl.linkProgram(firstProgram)
+    let program = gl.createProgram()
+    gl.attachShader(program, vertexShader)
+    gl.attachShader(program, fragmentShader)
+    gl.linkProgram(program)
     
-    firstProgram.aVertexPosition = gl.getAttribLocation(firstProgram, "aVertexPosition");
+    program.aVertexPosition = gl.getAttribLocation(program, "aVertexPosition");
+    program.uRotation = gl.getUniformLocation(program, 'uRotation')
     
-    return firstProgram;
+    return program;
 }
