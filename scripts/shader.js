@@ -20,6 +20,7 @@ module.exports = (gl) => {
     program.uColor = gl.getUniformLocation(program, 'uColor')
     program.uPixelMatrix = gl.getUniformLocation(program, "uPixelMatrix")
     program.uScale = gl.getUniformLocation(program, "uScale")
+    program.uPosition = gl.getUniformLocation(program, "uPosition")
     
     return program;
 }

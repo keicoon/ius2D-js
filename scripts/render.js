@@ -1,5 +1,6 @@
 let rotations = [0, 0, 0];
 let scales = [100,100,1];
+let position = [100,100,0];
 
 module.exports = (gl, program, buffer, logic)=>{
     rotations[2] += 0.1
@@ -15,6 +16,7 @@ module.exports = (gl, program, buffer, logic)=>{
     gl.uniformMatrix4fv(program.uPixelMatrix, false, logic.pixelMatrix)
     gl.uniform3fv(program.uScale, scales)
     gl.uniform3fv(program.uColor, [Math.random(), Math.random(), Math.random()])
+    gl.uniform3fv(program.uPosition, position)
     
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, buffer.numItem);
 }
