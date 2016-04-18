@@ -1,9 +1,11 @@
 module.exports = "" +
     "attribute vec3 aVertexPosition;" +
+    "attribute vec2 aVertexUV;" +
     "uniform mat4 uPixelMatrix;" +
+    "varying vec2 vUV;" +
+    "uniform vec3 uPosition;" +
     "uniform vec3 uScale;" +
     "uniform vec3 uRotation;" +
-    "uniform vec3 uPosition;" +
     "uniform vec3 uColor;" +
     "varying vec3 vColor;" +
     "mat4 positionMTX(vec3 t)" +
@@ -23,6 +25,7 @@ module.exports = "" +
     '   return m3*m2*m1;' +
     '}' +
     "void main(void) {" +
+    " vUV = aVertexUV;" +
     " gl_Position =uPixelMatrix*positionMTX(uPosition)*rotationMTX(uRotation)*scaleMTX(uScale)*vec4(aVertexPosition, 1.0);" +
     " vColor = uColor;" +
     "}"

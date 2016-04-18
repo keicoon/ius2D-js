@@ -5,6 +5,7 @@ var express = require('express')
   , server = http.createServer(app);
 
 app.use(express.static(__dirname+'/view'));
+app.use(express.static(__dirname+'/resource/texture'));
 app.use(express.static(__dirname+'/scripts'));
 
 app.get('/', function (req, res) {
