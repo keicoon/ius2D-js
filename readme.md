@@ -6,3 +6,7 @@ node
 express
 browserify
 watchify
+
+#Command
+> npm install
+> npm install nodemon -g 
