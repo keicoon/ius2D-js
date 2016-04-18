@@ -14,5 +14,5 @@ module.exports = (gl, program, buffer)=>{
     gl.uniform3fv(program.uRotation, rotations)
     gl.uniform3fv(program.uColor, [Math.random(), Math.random(), Math.random()])
     
-    gl.drawArrays(gl.TRIANGLES, 0, buffer.numItem);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, buffer.numItem);
 }

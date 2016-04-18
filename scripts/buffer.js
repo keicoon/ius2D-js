@@ -4,9 +4,10 @@ module.exports = (gl) => {
     let triangleBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleBuffer)
 
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data['triangleData']), gl.STATIC_DRAW)
+    let bufferData = data['rectData'];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferData.vertical), gl.STATIC_DRAW)
     triangleBuffer.itemSize = 3;
-    triangleBuffer.numItem = 3;
+    triangleBuffer.numItem = bufferData.numItem;
     
     return triangleBuffer;
 }
