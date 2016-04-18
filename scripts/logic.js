@@ -20,7 +20,7 @@ module.exports = (gl, cvs)=>{
     };
         
     setInterval(()=>{
-        // console.log('fps: ', fps.Getfps());
+        console.log('fps: ', fps.Getfps());
         let delta = fps.Tickfps();
         // update();
         render(gl, program, buffer, logic);
