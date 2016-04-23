@@ -4,8 +4,8 @@ class img {
         this.maximumSpriteNum = 0;
         this.currentSpriteNum = 0;
     } 
-    IsFinishLoading() {
-        return this.currentSpriteNum >= this.maximumSpriteNum;
+    GetLoadingState() {
+        return {'current':this.currentSpriteNum, 'maximum':this.maximumSpriteNum}
     }
     Add(gl, name, src) {
         let texture = gl.createTexture();

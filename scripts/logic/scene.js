@@ -9,8 +9,8 @@ class scene {
         
     }
     Tick(delta) {
-        this.Update();
-        this.Redner();
+        this.Update(delta);
+        this.Redner(delta);
     }
 }
 

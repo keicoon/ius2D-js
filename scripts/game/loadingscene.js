@@ -1,5 +1,5 @@
-const scene = require('./scene');
-const img = require('./img');
+const scene = require('../logic/scene');
+const img = require('../logic/img');
 const textureData = require('../data/texture')
 
 const gamescene = require('./gamescene');
@@ -10,17 +10,17 @@ class loadingscene extends scene {
         //texture loading
         textureData.map((o) => img.Add(logic.gl, o.key, o.value))
     }
-    Render() {
-        super.Render();
+    Render(delta) {
+        super.Render(delta);
     }
     
-    Update() {
-        super.Update();
+    Update(delta) {
+        super.Update(delta);
         
-        if(img.IsFinishLoading()){
-            console.log('Loading Finished..');
+        let LoadingState = img.GetLoadingState()
+        console.log('#Loading: ',LoadingState.current,' / ',LoadingState.maximum)
+        if(LoadingState.current >= LoadingState.maximum)
             this.logic.ChangeScene(this, new gamescene(this.logic));
-        }
     }
 }
 

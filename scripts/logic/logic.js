@@ -1,6 +1,5 @@
 const fps = require('./fps');
-
-const loadingscene = require('./loadingscene');
+const loadingscene = require('../game/loadingscene');
 
 module.exports = (gl, cvs)=>{
     let defaultViewportWidth = '1080', defaultViewportHeight = '1920'
@@ -31,11 +30,12 @@ module.exports = (gl, cvs)=>{
             0,0,0,0,
             0,0,0,1
         ],
-        'defaultViewportSize':{X:defaultViewportWidth, Y:defaultViewportHeight, Z:1},
-        'currentViewportSize':{X:viewportWidth, Y:viewportHeight, Z:1},
-        'viewportScale':{X:scaleWidth, Y:scaleHeight, Z:0},
+        'util': require('../util'),
+        'defaultViewportSize': {X:defaultViewportWidth, Y:defaultViewportHeight, Z:1},
+        'currentViewportSize': {X:viewportWidth, Y:viewportHeight, Z:1},
+        'viewportScale': {X:scaleWidth, Y:scaleHeight, Z:0},
         'ChangeScene': (prevScene, aftrScene) => {
-            //prevScene.Destroy();
+            //prevScene.Destropy();
             prevScene = null;
             // aftrScne.Initialize();
             currentScene = aftrScene;
@@ -43,12 +43,16 @@ module.exports = (gl, cvs)=>{
     };
     
     let currentScene = new loadingscene(logic);
-    
-    setInterval(()=>{
-        // console.log('fps: ', fps.Getfps());
+    function tick() {
         let delta = fps.Tickfps();
+        console.log('fps: ', fps.Getfps());
+        currentScene.Update(delta);
+        currentScene.Render(delta);
         
-        currentScene.Update();
-        currentScene.Render();
-    },33)
+        // process.nextTick(tick);
+    }
+    // tick()
+    setInterval(()=>{
+       tick() 
+    },0)
 }

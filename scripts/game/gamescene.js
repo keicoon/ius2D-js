@@ -1,19 +1,19 @@
-const scene = require('./scene');
-const sprite = require('./sprite');
+const scene = require('../logic/scene');
+const sprite = require('../logic/sprite');
 
 class gamescene extends scene {
     constructor(logic) {
         super(logic);
         this.spriteA = new sprite('test');
     }
-    Render() {
-        super.Render();
+    Render(delta) {
+        super.Render(delta);
         
         this.spriteA.Render(this.logic);
     }
     
-    Update() {
-        super.Update();
+    Update(delta) {
+        super.Update(delta);
     }
 }
 

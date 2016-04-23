@@ -1,6 +1,6 @@
 const render = require('./render');
 const img = require('./img');
-const util = require('./util');
+
 
 class sprite {
     constructor(name, Translation) {
@@ -19,7 +19,6 @@ class sprite {
     SetSprite(name) {
         this.Src = img.Get(name);
         this.SrcScale = {X:this.Src.img.naturalWidth, Y:this.Src.img.naturalHeight, Z:1};
-        console.log('#',this.SrcScale.X, this.SrcScale.Y)
     }
     GetLocation() {
         return [this.Location.X, this.Location.Y, this.Location.Z];
@@ -47,7 +46,7 @@ class sprite {
     }
     Render(logic) {
         render(logic.gl, logic.program, logic.buffer.vertex, logic.buffer.uv, logic.pixelMatrix,
-            this.GetLocation(), this.GetRotation(), util.ArrayVectorMultifly(this.GetScale(),logic.viewportScale), this.Src);
+            this.GetLocation(), this.GetRotation(), logic.util.ArrayVectorMultifly(this.GetScale(),logic.viewportScale), this.Src);
     }
 }
 module.exports = sprite;

@@ -1,5 +1,5 @@
 //initialize
-const logic = require('./logic');
+const logic = require('./logic/logic');
 
 // main logic
 {
