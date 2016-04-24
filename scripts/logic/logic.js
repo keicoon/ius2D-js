@@ -23,7 +23,6 @@ module.exports = (gl, cvs)=>{
     let logic = {
         'gl': gl,
         'program': require('./shader')(gl),
-        'buffer': require('./buffer')(gl),
         'pixelMatrix': [
             2/viewportWidth,0,0,0,
             0,2/viewportHeight,0,0,
@@ -45,7 +44,7 @@ module.exports = (gl, cvs)=>{
     let currentScene = new loadingscene(logic);
     function tick() {
         let delta = fps.Tickfps();
-        console.log('fps: ', fps.Getfps());
+        // console.log('fps: ', fps.Getfps());
         currentScene.Update(delta);
         currentScene.Render(delta);
         

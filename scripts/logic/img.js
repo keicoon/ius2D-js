@@ -1,3 +1,5 @@
+const textureData = require('../data/texture')
+
 class img {
     constructor() {
         this.imgMap = new Map();
@@ -7,10 +9,10 @@ class img {
     GetLoadingState() {
         return {'current':this.currentSpriteNum, 'maximum':this.maximumSpriteNum}
     }
-    Add(gl, name, src) {
+    Add(gl, name) {
         let texture = gl.createTexture();
         texture.img = new Image();
-        texture.img.src = src;
+        texture.img.src = textureData[name].src;
         ++this.maximumSpriteNum;
         
         texture.img.onload = ()=>{
@@ -19,8 +21,8 @@ class img {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             gl.bindTexture(gl.TEXTURE_2D, null);
+            this.imgMap.set(name, {'Id':textureData[name],'Src':texture});
             ++this.currentSpriteNum;
-            this.imgMap.set(name, texture);
         }
     }
     Get(name) {

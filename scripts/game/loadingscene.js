@@ -1,6 +1,5 @@
 const scene = require('../logic/scene');
 const img = require('../logic/img');
-const textureData = require('../data/texture')
 
 const gamescene = require('./gamescene');
 
@@ -8,7 +7,8 @@ class loadingscene extends scene {
     constructor(logic) {
         super(logic);
         //texture loading
-        textureData.map((o) => img.Add(logic.gl, o.key, o.value))
+        img.Add(logic.gl, 'test')
+        img.Add(logic.gl, 'test2')
     }
     Render(delta) {
         super.Render(delta);
