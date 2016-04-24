@@ -2,7 +2,7 @@ module.exports = {
     ArrayVectorMultifly:(a, v)=>{
         return [a[0]*v.X,a[1]*v.Y,a[2]*v.Z]
     },
-    MakeVertecData:(gl,bufferType)=>{
+    MakeVertexsData:(gl,bufferType)=>{
         const data = require('./data/arraybuffer')
         let bufferData = data[bufferType];
     

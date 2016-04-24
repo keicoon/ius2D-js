@@ -3,7 +3,7 @@ const img = require('./img');
 
 class sprite {
     constructor(logic, name, aN = 0, sN = 0, Translation, bufferType = 'rectData') {
-        this.vertex = logic.util.MakeVertecData(logic.gl, bufferType);
+        this.vertex = logic.util.MakeVertexsData(logic.gl, bufferType);
         
         this.aN = aN;
         this.sN = sN;

@@ -3,7 +3,7 @@ const img = require('./img');
 
 class animation {
     constructor(logic, name, aN = 0, Translation, bufferType = 'rectData') {
-        this.vertex = logic.util.MakeVertecData(logic.gl, bufferType);
+        this.vertex = logic.util.MakeVertexsData(logic.gl, bufferType);
         
         this.aN = aN;
         
