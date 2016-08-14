@@ -46,13 +46,6 @@ module.exports = {
         UVBuffer.numItem = 4;
         return UVBuffer;
     },
-    getPowerOfTwo:(value, pow = 1)=>{
-        pow = pow;
-        while(pow < value) {
-            pow *= 2;
-        }
-        return pow;
-    },
     Size,
     Vector2D
 }

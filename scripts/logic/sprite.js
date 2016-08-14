@@ -1,3 +1,5 @@
+"use strict"
+
 const transform = require('./transform');
 const render = require('./render');
 const img = require('./img');

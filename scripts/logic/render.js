@@ -1,4 +1,4 @@
-module.exports = (gl, program, Buffer, uvBuffer, Location, Rotaion, Scale, Texture)=>{
+module.exports = (gl, program, Buffer, uvBuffer, Location, Rotaion, Scale, Texture, color = [1, 1, 1])=>{
     gl.bindBuffer(gl.ARRAY_BUFFER, Buffer);
     gl.enableVertexAttribArray(program.aVertexPosition);
     gl.vertexAttribPointer(program.aVertexPosition, Buffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -14,6 +14,6 @@ module.exports = (gl, program, Buffer, uvBuffer, Location, Rotaion, Scale, Textu
     gl.uniform3fv(program.uRotation, Rotaion);
     gl.uniform3fv(program.uScale, Scale);
     gl.uniform3fv(program.uPosition, Location);
-    gl.uniform3fv(program.uColor, [1, 1, 1]);
+    gl.uniform3fv(program.uColor, color);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, Buffer.numItem);
 }

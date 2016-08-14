@@ -4,7 +4,7 @@ const fps = require('./fps');
 const loadingscene = require('../game/loadingscene');
 const util = require('../util')
 
-module.exports = (gl, cvs)=>{
+module.exports = (gl, cvs, canvas)=>{
     let defaultViewport = new util.Size(1080, 1920) 
     let screen = new util.Size(window.innerWidth, window.innerHeight)
     let viewport = new util.Size()
@@ -32,6 +32,7 @@ module.exports = (gl, cvs)=>{
             0,0,0,0,
             0,0,0,1
         ],
+        textSprite: require('./textSprite')(canvas, gl),
         util,
         defaultViewportSize: {X:defaultViewport.Width, Y:defaultViewport.Height, Z:1},
         currentViewportSize: {X:viewport.Width, Y:viewport.Height, Z:1},
