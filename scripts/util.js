@@ -1,3 +1,20 @@
+'use strict'
+
+class Size {
+    constructor(w,h) {
+        this.Width = w, this.Height = h
+    }
+}
+class Vector2D {
+    constructor(x,y) {
+        this.X = x, this.Y = y
+    }
+    Set(x = 0, y) {
+        y = y || x
+        this.X = x, this.Y = y
+    }
+}
+
 module.exports = {
     ArrayVectorMultifly:(a, v)=>{
         return [a[0]*v.X,a[1]*v.Y,a[2]*v.Z]
@@ -28,5 +45,7 @@ module.exports = {
         UVBuffer.itemSize = 2;
         UVBuffer.numItem = 4;
         return UVBuffer;
-    }
+    },
+    Size,
+    Vector2D,
 }

@@ -4,5 +4,8 @@ node_modules/*
 #bundle
 scripts/bundle.js
 
+#resource
+resource/*
+
 #ignore
 *.db

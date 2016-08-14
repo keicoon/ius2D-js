@@ -19,5 +19,13 @@
     "webgl"
   ],
   "author": "keicoon",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keicoon/webgl_g.git"
+  },
+  "bugs": {
+    "url": "https://github.com/keicoon/webgl_g/issues"
+  },
+  "homepage": "https://github.com/keicoon/webgl_g#readme"
 }

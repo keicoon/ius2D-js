@@ -1,3 +1,5 @@
+'use strict'
+
 var express = require('express')
   , http = require('http')
   , app = express()
@@ -6,6 +8,7 @@ var express = require('express')
 
 app.use(express.static(__dirname+'/view'));
 app.use(express.static(__dirname+'/resource/texture'));
+app.use(express.static(__dirname+'/resource/font'));
 app.use(express.static(__dirname+'/scripts'));
 
 app.get('/', function (req, res) {
