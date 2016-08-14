@@ -7,8 +7,8 @@ let initialize = () => {
     _.forEach(require('./data/font'), (v, k) => {
         newStyle.appendChild(document.createTextNode("\
 @font-face {\
-    font-family: '" + v + "';\
-    src: url('" + k + "') format(yourFontFormat);\
+    font-family: '" + k + "';\
+    src: url('" + v + "')\
 }\
 "));
     })
@@ -16,6 +16,7 @@ let initialize = () => {
 }
 let main = () => {
     initialize()
+    document.getElementById('test').style.fontFamily = 'RixToyGray'
     let cvs = document.getElementById('glCanvas');
     let gl;
 
