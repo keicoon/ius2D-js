@@ -2,50 +2,59 @@
 
 class transform {
     constructor(Location = {X:0,Y:0,Z:0}, Rotation = {Yaw:0,Pitch:0,Roll:0}, Scale = {X:1,Y:1,Z:1}) {
-        this.Location = Location
-        this.Rotation = Rotation
-        this.Scale = Scale
-        this.Transform = {
+        this.transform = {
             Location,
             Rotation,
             Scale
         }
     }
-    GetLocation() {
-        return [this.Location.X, this.Location.Y, this.Location.Z];
+    get LocationByArr() {
+        return [this.Transform.Location.X, this.Transform.Location.Y, this.Transform.Location.Z];
     }
-    GetRotation() {
-        return [this.Rotation.Yaw, this.Rotation.Pitch, this.Rotation.Roll];
+    get RotationByArr() {
+        return [this.Transform.Rotation.Yaw, this.Transform.Rotation.Pitch, this.Transform.Rotation.Roll];
     }
-    GetScale() {
-        return [this.Scale.X, this.Scale.Y, this.Scale.Z];
+    get ScaleByArr() {
+        return [this.Transform.Scale.X, this.Transform.Scale.Y, this.Transform.Scale.Z];
     }
-    SetTransform(Transform) {
-        this.Transform = Transform;
+    get Location() {
+        return this.Transform.Location
     }
-    SetLocation(Location) {
-        this.Location = Transform.Location;
+    get Rotation() {
+        return this.Transform.Rotation
     }
-    SetRotation(Rotation) {
-        this.Rotation = Transform.Rotation;
+    get Scale() {
+        return this.Transform.Scale
     }
-    SetScale(Scale) {
-        this.Scale = Transform.Scale;
+    get Transform() {
+        return this.transform
     }
-    MoveLocation(Location) {
-        this.Location.X += Location.X;
-        this.Location.Y += Location.Y;
-        this.Location.Z += Location.Z;
+    set Location(_Location) {
+        this.Transform.Location = _Location
     }
-    MoveRotation(Rotation) {
-        this.Rotation.Yaw += Rotation.Yaw;
-        this.Rotation.Pitch += Rotation.Pitch;
-        this.Rotation.Roll += Rotation.Roll;
+    set Rotation(_Rotation) {
+        this.Transform.Rotation = _Rotation;
     }
-    MoveScale(Scale) {
-        this.Scale.X += Scale.X;
-        this.Scale.Y += Scale.Y;
-        this.Scale.Z += Scale.Z;
+    set Scale(_Scale) {
+        this.Transform.Scale = _Scale;
+    }
+    set Transform(_Transform) {
+        this.transform = _Transform;
+    }
+    MoveLocation(_Location) {
+        this.Transform.Location.X += _Location.X;
+        this.Transform.Location.Y += _Location.Y;
+        this.Transform.Location.Z += _Location.Z;
+    }
+    MoveRotation(_Rotation) {
+        this.Transform.Rotation.Yaw += _Rotation.Yaw;
+        this.Transform.Rotation.Pitch += _Rotation.Pitch;
+        this.Transform.Rotation.Roll += _Rotation.Roll;
+    }
+    MoveScale(_Scale) {
+        this.Transform.Scale.X += _Scale.X;
+        this.Transform.Scale.Y += _Scale.Y;
+        this.Transform.Scale.Z += _Scale.Z;
     }
 }
 module.exports = transform;

@@ -27,7 +27,7 @@ class sprite extends transform {
     }
     Render(logic) {
         render(logic.gl, logic.program, this.vertex, this.uv,
-            this.GetLocation(), this.GetRotation(), logic.util.ArrayVectorMultifly(this.GetSpriteScale(),logic.viewportScale),
+            this.LocationByArr, this.RotationByArr, logic.util.ArrayVectorMultifly(this.GetSpriteScale(),logic.viewportScale),
             this.Src);
     }
 }

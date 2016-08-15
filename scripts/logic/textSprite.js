@@ -36,15 +36,23 @@ module.exports = (canvas, gl) => {
     }
 
     class textSprite extends transform {
-        constructor(logic, text, size, color, font, location, rotation, scale) {
+        constructor(logic, text = '', size = 15, color = '#FFFFFF', font = 'RixToyGray', location, rotation, scale) {
             super(location, rotation, scale)
             this.logic = logic
             this.vertex = logic.util.MakeVertexsData(logic.gl, 'rectData');
 
-            this.ChangeText(text, size, color, font)
+            ///temperary cached
+            this.cached = {
+                text,
+                size,
+                color,
+                font
+            }
+
+            this.ChangeText(this.cached)
         }
         ChangeText(text, size, color, font) {
-            let _Src = generateTextTexture(text, size, color, font)
+            let _Src = generateTextTexture(text || this.cached.text, size || this.cached.size, color || this.cached.color, font || this.cached.font)
             this.Src = _Src.Src
             this.SrcRect = [0,0,_Src.width,_Src.height]
             this.uv = this.logic.util.MakeRectUVData(this.logic.gl, _Src.width, _Src.height, this.SrcRect);
@@ -56,7 +64,7 @@ module.exports = (canvas, gl) => {
         }
         Render() {
             render(this.logic.gl, this.logic.program, this.vertex, this.uv,
-                this.GetLocation(), this.GetRotation(), this.logic.util.ArrayVectorMultifly(this.GetSpriteScale(), this.logic.viewportScale),
+                this.LocationByArr, this.RotationByArr, this.logic.util.ArrayVectorMultifly(this.GetSpriteScale(), this.logic.viewportScale),
                 this.Src)
         }
     }

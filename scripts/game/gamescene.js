@@ -9,7 +9,7 @@ class gamescene extends scene {
         this.animationA = new animation(logic, 'test2', 0)
         this.animationA.MoveLocation({X:50,Y:80,Z:0})
 
-        this.textSprite = new logic.textSprite(logic, '', 25, '#FF0000', 'RixToyGray', {X: -100, Y: 200, Z: 0})
+        this.textSprite = new logic.textSprite(logic, '', 55, '#FF0000', 'RixToyGray', {X: -100, Y: 200, Z: 0})
         this.textSprite.MoveLocation({X:0,Y:200,Z:0})
 
         this.prevFPS = this.logic.fps()
@@ -28,7 +28,7 @@ class gamescene extends scene {
         this.animationA.Update(this.logic, delta)
         const curFPS = this.logic.fps()
         if(curFPS != this.prevFPS) {
-            this.textSprite.ChangeText('fps: ' + curFPS, 25, '#FFFFFF', 'RixToyGray')
+            this.textSprite.ChangeText('fps: ' + curFPS)
             this.prevFPS = curFPS
         } 
     }
