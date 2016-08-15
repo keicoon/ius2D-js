@@ -1,10 +1,10 @@
 const transform = require('./transform');
 const render = require('./render');
-const img = require('./img');
 
 class animation extends transform {
-    constructor(logic, name, aN = 0, Transform, bufferType = 'rectData') {
-        super(Transform);
+    constructor(logic, name, aN = 0, location, rotation, scale, bufferType = 'rectData') {
+        super(location, rotation, scale);
+        this.resourceManager = logic.resourceManager
         this.vertex = logic.util.MakeVertexsData(logic.gl, bufferType);
         
         this.aN = aN;
@@ -17,7 +17,7 @@ class animation extends transform {
         this.speed = 1;
         this.animationTimer = 0;
         
-        const imgData = img.Get(name);
+        const imgData = this.resourceManager.GetImage(name);
         this.Id = imgData.Id;
         this.Src = imgData.Src;
         this.uv = logic.util.MakeRectUVData(logic.gl, this.Id.width, this.Id.height, this.Id.animation[this.aN][this.currentFrame]);

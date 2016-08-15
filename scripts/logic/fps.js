@@ -1,3 +1,5 @@
+'use strict'
+
 class fps {
     constructor() {
         this.delta = 1;
@@ -11,7 +13,7 @@ class fps {
         return this.delta;
     }
     Getfps() {
-        return 1 / this.delta;
+        return Math.round(1 / this.delta)
     }
 }
 module.exports = new fps();

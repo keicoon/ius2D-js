@@ -1,14 +1,16 @@
-const scene = require('../logic/scene');
-const img = require('../logic/img');
+'use strict'
 
+const scene = require('../logic/scene');
 const gamescene = require('./gamescene');
 
 class loadingscene extends scene {
     constructor(logic) {
         super(logic);
+        this.resourceManager = logic.resourceManager
         //texture loading
-        img.Add(logic.gl, 'test')
-        img.Add(logic.gl, 'test2')
+        this.resourceManager.AddImage(logic.gl, 'test')
+        this.resourceManager.AddImage(logic.gl, 'test2')
+        this.resourceManager.AddAllFont()
     }
     Render(delta) {
         super.Render(delta);
@@ -17,9 +19,7 @@ class loadingscene extends scene {
     Update(delta) {
         super.Update(delta);
         
-        let LoadingState = img.GetLoadingState()
-        console.log('#Loading: ',LoadingState.current,' / ',LoadingState.maximum)
-        if(LoadingState.current >= LoadingState.maximum)
+        if(this.resourceManager.GetLoadingState())
             this.logic.ChangeScene(this, new gamescene(this.logic));
     }
 }

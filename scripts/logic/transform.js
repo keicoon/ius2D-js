@@ -1,13 +1,15 @@
+'use strict'
+
 class transform {
-    constructor(Transform) {
-        this.Transform = Transform;
-        
-        this.Initialize(this.Transform);
-    }
-    Initialize(Transform = {'Location':{X:0,Y:0,Z:0},'Rotation':{Yaw:0,Pitch:0,Roll:0},'Scale':{X:1,Y:1,Z:1}}) {
-        this.Location = Transform.Location;
-        this.Rotation = Transform.Rotation;
-        this.Scale = Transform.Scale;
+    constructor(Location = {X:0,Y:0,Z:0}, Rotation = {Yaw:0,Pitch:0,Roll:0}, Scale = {X:1,Y:1,Z:1}) {
+        this.Location = Location
+        this.Rotation = Rotation
+        this.Scale = Scale
+        this.Transform = {
+            Location,
+            Rotation,
+            Scale
+        }
     }
     GetLocation() {
         return [this.Location.X, this.Location.Y, this.Location.Z];

@@ -9,21 +9,28 @@ class gamescene extends scene {
         this.animationA = new animation(logic, 'test2', 0)
         this.animationA.MoveLocation({X:50,Y:80,Z:0})
 
-        this.textSprite = new logic.textSprite(logic, 'abcd가나다', 20, '#FF0000', 'RixToyGray')
+        this.textSprite = new logic.textSprite(logic, '', 25, '#FF0000', 'RixToyGray', {X: -100, Y: 200, Z: 0})
         this.textSprite.MoveLocation({X:0,Y:200,Z:0})
+
+        this.prevFPS = this.logic.fps()
     }
     Render(delta) {
         super.Render(delta)
         
         this.spriteA.Render(this.logic)
         this.animationA.Render(this.logic)
-        this.textSprite.Render(this.logic)
+        this.textSprite.Render()
     }
     
     Update(delta) {
         super.Update(delta)
         
         this.animationA.Update(this.logic, delta)
+        const curFPS = this.logic.fps()
+        if(curFPS != this.prevFPS) {
+            this.textSprite.ChangeText('fps: ' + curFPS, 25, '#FFFFFF', 'RixToyGray')
+            this.prevFPS = curFPS
+        } 
     }
 }
 

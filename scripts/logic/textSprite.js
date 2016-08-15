@@ -36,26 +36,27 @@ module.exports = (canvas, gl) => {
     }
 
     class textSprite extends transform {
-        constructor(logic, text, size, color, font, Transform) {
-            super(Transform)
+        constructor(logic, text, size, color, font, location, rotation, scale) {
+            super(location, rotation, scale)
+            this.logic = logic
             this.vertex = logic.util.MakeVertexsData(logic.gl, 'rectData');
 
-            this.ChangeText(logic, text, size, color, font)
+            this.ChangeText(text, size, color, font)
         }
-        ChangeText(logic, text, size, color, font) {
+        ChangeText(text, size, color, font) {
             let _Src = generateTextTexture(text, size, color, font)
             this.Src = _Src.Src
             this.SrcRect = [0,0,_Src.width,_Src.height]
-            this.uv = logic.util.MakeRectUVData(logic.gl, _Src.width, _Src.height, this.SrcRect);
+            this.uv = this.logic.util.MakeRectUVData(this.logic.gl, _Src.width, _Src.height, this.SrcRect);
         }
         GetSpriteScale() {
             const rect = this.SrcRect;
             const SrcScale = { X: rect[2], Y: rect[3], Z: 1 };
             return [SrcScale.X * this.Scale.X, SrcScale.Y * this.Scale.Y, SrcScale.Z * this.Scale.Z];
         }
-        Render(logic) {
-            render(logic.gl, logic.program, this.vertex, this.uv,
-                this.GetLocation(), this.GetRotation(), logic.util.ArrayVectorMultifly(this.GetSpriteScale(), logic.viewportScale),
+        Render() {
+            render(this.logic.gl, this.logic.program, this.vertex, this.uv,
+                this.GetLocation(), this.GetRotation(), this.logic.util.ArrayVectorMultifly(this.GetSpriteScale(), this.logic.viewportScale),
                 this.Src)
         }
     }

@@ -2,11 +2,11 @@
 
 const transform = require('./transform');
 const render = require('./render');
-const img = require('./img');
 
 class sprite extends transform {
-    constructor(logic, name, aN = 0, sN = 0, Transform, bufferType = 'rectData') {
-        super(Transform)
+    constructor(logic, name, aN = 0, sN = 0, location, rotation, scale, bufferType = 'rectData') {
+        super(location, rotation, scale)
+        this.resourceManager = logic.resourceManager
         this.vertex = logic.util.MakeVertexsData(logic.gl, bufferType);
         
         this.aN = aN;
@@ -15,7 +15,7 @@ class sprite extends transform {
         this.SetSprite(logic, name);
     }
     SetSprite(logic, name) {
-        const imgData = img.Get(name);
+        const imgData = this.resourceManager.GetImage(name);
         this.Id = imgData.Id;
         this.Src = imgData.Src;
         this.uv = logic.util.MakeRectUVData(logic.gl, this.Id.width, this.Id.height, this.Id.animation[this.aN][this.sN]);

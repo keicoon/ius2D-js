@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-    'RixToyGray': 'RixToyGray.ttf'
+    'RixToyGray': './RixToyGray.ttf'
 }
