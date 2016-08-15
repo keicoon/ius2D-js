@@ -1,8 +1,31 @@
+'use strict'
+
+const eGameStatus = ((list)=>{
+    let obj = new Object()
+    for(let index = 0, length = list.length; index < length; ++index)
+        obj[list[index]] = index
+    return obj
+})(['NotYet','ResourceLoading','ResourceLoaded','GameStarted','GameStop','GameResume','GameOver'])
+
 class scene {
     constructor(logic) {
         this.logic = logic;
+        this.bTick = false
     }
-    Render() {
+    pBeginPlay() {
+        this.BeginPlay()
+
+        this.logic.gameStatus = this.GameStatus.GameStarted
+        this.bTick = true
+    }
+    pDestroy() {
+        this.bTick = false
+        this.logic.gameStatus = this.GameStatus.GameOver
+        this.logic.timerManager.DeleteTimer()
+
+        this.Destroy()
+    }
+    pRender(delta) {
         const gl = this.logic.gl;
         const program = this.logic.program;
         const pixelMatrix = this.logic.pixelMatrix;
@@ -11,13 +34,14 @@ class scene {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
         gl.useProgram(program)
         gl.uniformMatrix4fv(program.uPixelMatrix, false, pixelMatrix);
+
+        this.bTick && this.Render(delta)
     }
-    Update() {
-        
+    pUpdate(delta) {
+        this.bTick && this.Update(delta)
     }
-    Tick(delta) {
-        this.Update(delta);
-        this.Redner(delta);
+    get GameStatus() {
+        return eGameStatus
     }
 }
 

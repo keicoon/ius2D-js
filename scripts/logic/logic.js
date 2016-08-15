@@ -4,7 +4,9 @@ const _ = require('lodash')
 
 const fps = require('./fps')
 const loadingscene = require('../game/loadingscene')
+const debugscene = require('../game/debugscene')
 const resourceManager = require('./resourceManager')
+const timerManager = require('../logic/timerManager')
 const util = require('../util')
 
 module.exports = (gl, cvs, context) => {
@@ -27,6 +29,7 @@ module.exports = (gl, cvs, context) => {
 
     //initialize
     let logic = _.extend(context, {
+        gameStatus: 0,
         gl,
         program: require('./shader')(gl),
         pixelMatrix: [
@@ -35,33 +38,36 @@ module.exports = (gl, cvs, context) => {
             0, 0, 0, 0,
             0, 0, 0, 1
         ],
-        textSprite: require('./textSprite')(context.canvas, gl),
         resourceManager: new resourceManager(context),
+        timerManager: timerManager,
         fps: ()=>fps.Getfps(),
         util,
         defaultViewportSize: { X: defaultViewport.Width, Y: defaultViewport.Height, Z: 1 },
         currentViewportSize: { X: viewport.Width, Y: viewport.Height, Z: 1 },
         viewportScale: { X: viewportScale.X, Y: viewportScale.Y, Z: 0 },
         ChangeScene: (prevScene, aftrScene) => {
-            //prevScene.Destropy();
+            prevScene.pDestroy();
             prevScene = null;
-            // aftrScne.Initialize();
+            aftrScene.pBeginPlay();
             currentScene = aftrScene;
         }
     })
+    
+    let currentScene = new loadingscene(logic),
+        debugScene = new debugscene(logic);
+    currentScene.pBeginPlay()
+    debugScene.BeginPlay()
 
-    let currentScene = new loadingscene(logic);
-
-    function tick() {
-        let delta = fps.Tickfps();
-
-        currentScene.Update(delta);
-        currentScene.Render(delta);
-
-        // process.nextTick(tick);
-    }
-    // tick()
     setInterval(() => {
-        tick()
-    }, 0)
+        let delta = fps.Tickfps();
+        if (!delta) return
+
+        timerManager.Tick(delta)
+
+        currentScene.pUpdate(delta);
+        currentScene.pRender(delta);
+
+        debugScene.Update(delta)
+        debugScene.Render(delta)
+    },0)
 }
