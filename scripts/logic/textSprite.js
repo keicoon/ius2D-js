@@ -36,7 +36,7 @@ module.exports = (canvas, gl) => {
     }
 
     class textSprite extends transform {
-        constructor(logic, text = '', size = 15, color = '#FFFFFF', font = 'RixToyGray', location, rotation, scale) {
+        constructor(logic, text = '', size = 15, color = 'rgb(255,255,255)', font = 'RixToyGray', location, rotation, scale) {
             super(location, rotation, scale)
             this.logic = logic
             this.vertex = logic.util.MakeVertexsData(logic.gl, 'rectData');

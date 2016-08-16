@@ -46,6 +46,7 @@ module.exports = {
         UVBuffer.numItem = 4;
         return UVBuffer;
     },
+    RGB:(r,g,b)=>'rgb('+r+','+g+','+b+')',
     Size,
     Vector2D
 }
