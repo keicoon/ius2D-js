@@ -49,7 +49,7 @@ module.exports = (canvas, gl) => {
                 font
             }
 
-            this.ChangeText(this.cached)
+            this.ChangeText()
         }
         ChangeText(text, size, color, font) {
             let _Src = generateTextTexture(text || this.cached.text, size || this.cached.size, color || this.cached.color, font || this.cached.font)

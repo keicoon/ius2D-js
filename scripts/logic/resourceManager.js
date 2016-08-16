@@ -11,8 +11,11 @@ class resourceManager {
         this.imgMap = new Map()
         this.maximumResourceNum = this.currentResourceNum = 0
     } 
-    GetLoadingState() {
+    get IsLoaded() {
         return (this.currentResourceNum >= this.maximumResourceNum)
+    }
+    GetStatus() {
+        return 'Loading... '+ this.currentResourceNum + ' / ' + this.maximumResourceNum
     }
     AddImage(gl, name) {
         let texture = gl.createTexture();

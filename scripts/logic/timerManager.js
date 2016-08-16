@@ -23,9 +23,6 @@ class timer {
         this.immune = immune
         this.bBoom = false
     }
-    SetStockTime(t) {
-        this.stockTime = t
-    }
     SetTimerFunc(fn) {
         this.fn = fn
     }

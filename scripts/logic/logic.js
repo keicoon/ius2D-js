@@ -69,5 +69,5 @@ module.exports = (gl, cvs, context) => {
 
         debugScene.Update(delta)
         debugScene.Render(delta)
-    },0)
+    }, 0)
 }

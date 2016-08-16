@@ -14,13 +14,10 @@ class scene {
     }
     pBeginPlay() {
         this.BeginPlay()
-
-        this.logic.gameStatus = this.GameStatus.GameStarted
         this.bTick = true
     }
     pDestroy() {
         this.bTick = false
-        this.logic.gameStatus = this.GameStatus.GameOver
         this.logic.timerManager.DeleteTimer()
 
         this.Destroy()
