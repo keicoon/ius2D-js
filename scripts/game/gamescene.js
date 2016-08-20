@@ -15,6 +15,8 @@ class gamescene extends scene {
         this.animationA = new animation(this.logic, 'test2', 0)
         this.animationA.MoveLocation({X:50,Y:80,Z:0})
         this.textSprite = new (textSprite(this.logic))(this.logic, '하이요! 이게 얼마나 길게 써지는데 테스트 해보고 싶어요', 55, util.RGB(255,255,0), 'RixToyGray', 'left', util.ProjectionViewport({X:-540, Y:-200}, this.logic))
+        this.bgm = this.logic.resourceManager.GetAudio('Reminiscence')
+        this.bgm.play()
     }
     Destroy() {}
     Render(delta) {

@@ -1,14 +1,17 @@
 'use strict'
 
 const _ = require('lodash')
+const Howl = require('howler').Howl
 
 const textureData = require('../data/texture')
 const fontPath = require('../data/font')
+const audioPath = require('../data/audio')
 
 class resourceManager {
     constructor(context) {
         this.context = context
         this.imgMap = new Map()
+        this.audioMap = new Map()
         this.maximumResourceNum = this.currentResourceNum = 0
     } 
     get IsLoaded() {
@@ -50,6 +53,20 @@ class resourceManager {
             ++this.currentResourceNum
             console.log('#Loaded Font', name)
         })
+    }
+    AddAudio(name) {
+        ++this.maximumResourceNum
+        let sound = new Howl({
+            urls: [audioPath[name]]
+        })
+        sound.on('load', ()=>{
+            this.audioMap.set(name, sound)
+            ++this.currentResourceNum;
+            console.log('#Loaded Audio', name)
+        })
+    }
+    GetAudio(name) {
+        return this.audioMap.get(name)
     }
 }
 module.exports = resourceManager;

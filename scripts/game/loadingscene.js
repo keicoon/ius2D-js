@@ -13,6 +13,7 @@ class loadingscene extends scene {
     BeginPlay() {
         this.resourceManager.AddImage(this.logic.gl, 'test')
         this.resourceManager.AddImage(this.logic.gl, 'test2')
+        this.resourceManager.AddAudio('Reminiscence')
         this.resourceManager.AddAllFont()
         this.logic.gameStatus = this.GameStatus.ResourceLoading
         this.textSprite = new (textSprite(this.logic))(this.logic, '', 30, util.RGB(255,255,255), 'Arial')
