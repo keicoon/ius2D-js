@@ -32,8 +32,8 @@ module.exports = {
         UVBuffer.numItem = 4;
         return UVBuffer;
     },
-    ProjectViewport:(location, viewportScale)=>{
-        return Vector3D.C(location).Multifly_Vector(viewportScale)
+    ProjectionViewport:(loc, logic)=>{
+        return Vector3D.C(loc).Multifly_Vector(logic.viewportScale)
     },
     RGB:(r,g,b)=>'rgb('+r+','+g+','+b+')',
     Vector3D,

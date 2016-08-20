@@ -5,7 +5,8 @@ const Vector3D = util.Vector3D
 const transform = require('./transform');
 const render = require('./render');
 
-module.exports = (canvas, gl) => {
+module.exports = (logic) => {
+    const canvas = logic.canvas, gl = logic.gl
     let getPowerOfTwo = (value, pow = 1) => {
         pow = pow;
         while(pow < value) {
@@ -13,16 +14,18 @@ module.exports = (canvas, gl) => {
         }
         return pow;
     }
-    let generateTextTexture = (text, size, color, font) => {
+    let generateTextTexture = (text, size, color, font, textAlign) => {
         let ctx = canvas.getContext('2d')
         ctx.font = size + 'px ' + font
-        canvas.width = getPowerOfTwo(ctx.measureText(text).width)
+        ctx.textAlign = textAlign
+        ctx.textBaseline = 'top'
+        canvas.width = getPowerOfTwo(2 * ctx.measureText(text).width)
         canvas.height = getPowerOfTwo(2 * size)
         ctx = canvas.getContext('2d')
         ctx.fillStyle = color
         ctx.font = size + 'px ' + font
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
+        ctx.textAlign = textAlign
+        ctx.textBaseline = 'top'
         ctx.fillText(text, canvas.width * 0.5, canvas.height * 0.5)
 
         let texture = gl.createTexture()
@@ -38,7 +41,7 @@ module.exports = (canvas, gl) => {
     }
 
     class textSprite extends transform {
-        constructor(logic, text = '', size = 15, color = 'rgb(255,255,255)', font = 'RixToyGray', location, rotation, scale) {
+        constructor(logic, text = '', size = 15, color = 'rgb(255,255,255)', font = 'RixToyGray', textAlign = 'center', location, rotation, scale) {
             super(location, rotation, scale)
             this.logic = logic
             this.vertex = util.MakeVertexsData(logic.gl, 'rectData');
@@ -48,13 +51,14 @@ module.exports = (canvas, gl) => {
                 text,
                 size,
                 color,
-                font
+                font,
+                textAlign
             }
 
             this.ChangeText()
         }
-        ChangeText(text, size, color, font) {
-            let _Src = generateTextTexture(text || this.cached.text, size || this.cached.size, color || this.cached.color, font || this.cached.font)
+        ChangeText(text, size, color, font, textAlign) {
+            let _Src = generateTextTexture(text || this.cached.text, size || this.cached.size, color || this.cached.color, font || this.cached.font, textAlign || this.cached.textAlign)
             this.Src = _Src.Src
             this.SrcRect = [0,0,_Src.width,_Src.height]
             this.uv = util.MakeRectUVData(this.logic.gl, _Src.width, _Src.height, this.SrcRect);

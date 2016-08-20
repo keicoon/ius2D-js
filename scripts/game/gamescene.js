@@ -11,10 +11,10 @@ class gamescene extends scene {
         super(logic);
     }
     BeginPlay() {
-        this.spriteA = new sprite(this.logic, 'test', 0, 0, util.ProjectViewport({X:0,Y:0,Z:0}, this.logic.viewportScale))
+        this.spriteA = new sprite(this.logic, 'test', 0, 0, util.ProjectionViewport({X:340, Y:340}, this.logic))
         this.animationA = new animation(this.logic, 'test2', 0)
         this.animationA.MoveLocation({X:50,Y:80,Z:0})
-        this.textSprite = new (textSprite(this.logic.canvas, this.logic.gl))(this.logic, '하이요!', 55, util.RGB(255,255,0), 'RixToyGray', {X: -100, Y: -200, Z: 0})
+        this.textSprite = new (textSprite(this.logic))(this.logic, '하이요! 이게 얼마나 길게 써지는데 테스트 해보고 싶어요', 55, util.RGB(255,255,0), 'RixToyGray', 'left', util.ProjectionViewport({X:-540, Y:-200}, this.logic))
     }
     Destroy() {}
     Render(delta) {
