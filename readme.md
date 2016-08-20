@@ -7,6 +7,8 @@ node
 express
 browserify
 watchify
+lodash
+howler
 ```
 #Start
 * install [node.js](https://nodejs.org/en/)
