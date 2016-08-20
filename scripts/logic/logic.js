@@ -6,7 +6,8 @@ const fps = require('./fps')
 const loadingscene = require('../game/loadingscene')
 const debugscene = require('../game/debugscene')
 const resourceManager = require('./resourceManager')
-const timerManager = require('../logic/timerManager')
+const timerManager = require('./timerManager')
+const inputManager = require('./inputManager')
 const util = require('../util/util')
 const Vector2D = util.Vector2D
 const Vector3D = util.Vector3D
@@ -41,8 +42,10 @@ module.exports = (gl, cvs, context) => {
             0, 0, 0, 1
         ],
         resourceManager: new resourceManager(context),
-        timerManager: timerManager,
+        timerManager,
+        deltaTime: ()=>timerManager.DeltaTime(),
         fps: ()=>fps.Getfps(),
+        inputManager: inputManager(true, false, false),
         defaultViewportSize,
         viewportSize,
         viewportScale,

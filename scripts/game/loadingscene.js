@@ -13,7 +13,8 @@ class loadingscene extends scene {
     BeginPlay() {
         this.resourceManager.AddImage(this.logic.gl, 'test')
         this.resourceManager.AddImage(this.logic.gl, 'test2')
-        this.resourceManager.AddAudio('Reminiscence')
+        this.resourceManager.AddAudio('Reminiscence', true)
+        this.resourceManager.AddAudio('touhouproject', true)
         this.resourceManager.AddAllFont()
         this.logic.gameStatus = this.GameStatus.ResourceLoading
         this.textSprite = new (textSprite(this.logic))(this.logic, '', 30, util.RGB(255,255,255), 'Arial')
@@ -34,6 +35,12 @@ class loadingscene extends scene {
                 this.logic.gameStatus = this.GameStatus.ResourceLoaded
             })
         }
+    }
+    InputKey(_this, k, s) {
+        console.log(k, s)
+    }
+    InputMouse(_this, x, y) {
+        console.log(x, y)
     }
 }
 

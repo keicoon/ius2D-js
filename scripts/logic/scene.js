@@ -15,8 +15,18 @@ class scene {
     pBeginPlay() {
         this.BeginPlay()
         this.bTick = true
+        
+        this.logic.inputManager.Delegate_InputKey.Add = (...p)=>{
+            this.InputKey(this, p[0], p[1])
+        }
+        this.logic.inputManager.Delegate_InputMouse.Add = (...p)=>{
+            this.InputMouse(this, p[0], p[1])
+        }
     }
     pDestroy() {
+        this.logic.inputManager.Delegate_InputKey.RemoveAll()
+        this.logic.inputManager.Delegate_InputMouse.RemoveAll()
+
         this.bTick = false
         this.logic.timerManager.DeleteTimer()
 

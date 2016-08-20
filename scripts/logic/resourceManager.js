@@ -52,10 +52,11 @@ class resourceManager {
             console.log('#Loaded Font', name)
         })
     }
-    AddAudio(name) {
+    AddAudio(name, loop = false) {
         ++this.maximumResourceNum
         let sound = new Howl({
-            src: [audioPath[name]]
+            src: [audioPath[name]],
+            loop
         })
         sound.on('load', ()=>{
             this.audioMap.set(name, sound)

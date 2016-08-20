@@ -53,8 +53,10 @@ class timer {
 class timerManager {
     constructor() {
         this.timers = []
+        this.deltaTime = 0
     }
     Tick(delta) {
+        this.deltaTime = delta
         for(let index = 0, length = this.timers.length; index < length; ++index)
             this.timers[index].Tick(delta)
     }
@@ -72,5 +74,6 @@ class timerManager {
     DeleteAllTimer() {
         this.timers = []
     }
+    DeltaTime() { return this.deltaTime * 0.001 }
 }
 module.exports = new timerManager()

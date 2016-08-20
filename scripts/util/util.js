@@ -3,6 +3,7 @@
 const Vector3D = require('./vector').Vector3D
 const Vector2D = require('./vector').Vector2D
 const Rotator = require('./rotator')
+const Delegate = require('./delegate')
 
 module.exports = {
     MakeVertexsData:(gl,bufferType)=>{
@@ -39,4 +40,5 @@ module.exports = {
     Vector3D,
     Vector2D,
     Rotator,
+    Delegate
 }
