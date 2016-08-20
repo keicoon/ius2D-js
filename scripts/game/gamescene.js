@@ -25,7 +25,7 @@ class gamescene extends scene {
         this.textSprite.Render()
     }
     Update(delta) {
-        this.animationA.Update(delta)
+        this.animationA.Update()
     }
 }
 

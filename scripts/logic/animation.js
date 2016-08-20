@@ -13,12 +13,12 @@ class animation extends transform {
         this.vertex = util.MakeVertexsData(logic.gl, bufferType)
         
         this.aN = aN;
-        
+        this.animationTimer = this.logic.timerManager.AddTimer(undefined, undefined, false)
         this.SetAnimation(name, fps)
     }  
     SetAnimation(name, fps) {    
         this.currentFrame = 0;
-        this.animationTimer = 0;
+        this.animationTimer.ResetTime()
 
         const imgData = this.resourceManager.GetImage(name);
         this.Id = imgData.Id;
@@ -37,11 +37,10 @@ class animation extends transform {
             this.Location.ToArray(), this.Rotation.ToArray(), this.GetSpriteScale().Multifly_Vector(this.logic.viewportScale).ToArray(),
             this.Src);
     }
-    Update(delta) {
-        this.animationTimer += delta;
-        let currentFrame = Math.floor(this.animationTimer*this.frame/this.speed)
+    Update() {
+        let currentFrame = Math.floor(this.animationTimer.Time*this.frame/this.speed)
         if(currentFrame >= this.frame){
-            currentFrame = this.animationTimer = 0;
+            currentFrame = 0, this.animationTimer.ResetTime()
         }
         if(currentFrame != this.currentFrame){
             this.currentFrame = currentFrame

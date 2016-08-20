@@ -9,4 +9,7 @@ if exist "C:\Program Files\nodejs" (
     echo need setup nodejs
 )
 
+git submodule init
+git submodule update
+
 pause

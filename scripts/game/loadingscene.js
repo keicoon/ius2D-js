@@ -27,6 +27,7 @@ class loadingscene extends scene {
         this.textSprite.ChangeText(this.resourceManager.GetStatus())
         if(!this.rock && this.resourceManager.IsLoaded) {
             this.rock = true
+            //@lazy delay loading
             this.timer = this.logic.timerManager.AddTimer(500)
             this.timer.SetTimerFunc(()=>{
                 this.logic.ChangeScene(this, new gamescene(this.logic));

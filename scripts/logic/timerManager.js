@@ -17,32 +17,37 @@ class time {
     }
 }
 class timer {
-    constructor(t, immune) {
+    constructor(t, bImmune, bUseBoom) {
         this.time = new time()
         this.stockTime = t
-        this.immune = immune
+        this.bImmune = bImmune
+        this.bUseBoom = bUseBoom
         this.bBoom = false
     }
     SetTimerFunc(fn) {
         this.fn = fn
     }
+    ResetTime() {
+        this.time.Reset()
+    }
     Tick(delta) {
-        if(this.bBoom) return
-        
-        this.time.Tick(delta)
-        if(this.time.currentTime > this.stockTime) {
+        if (this.bBoom) return
+
+        if (this.time.currentTime > this.stockTime && this.bUseBoom) {
             this.bBoom = true
-            if(this.fn) {
+            if (this.fn) {
                 this.fn()
                 this.IsBoom()
             }
-            this.time.Reset()
+            this.ResetTime()
         }
+        this.time.Tick(delta)
     }
     IsBoom() {
-        const result = this.bBoom
-        if(result) this.bBoom = false
-        return result
+        return this.bBoom && ((this.bBoom = false) || true)
+    }
+    get Time() {
+        return this.time.currentTime
     }
 }
 class timerManager {
@@ -53,15 +58,15 @@ class timerManager {
         for(let index = 0, length = this.timers.length; index < length; ++index)
             this.timers[index].Tick(delta)
     }
-    AddTimer(t, immune = false) {
-        let _timer = new timer(t, immune)
+    AddTimer(t = 0, bImmune = false, bUseBoom = true) {
+        let _timer = new timer(t, bImmune, bUseBoom)
         this.timers.push(_timer)
         return _timer
     }
     DeleteTimer() {
         let _timers = []
         for(let index = 0, length = this.timers.length; index < length; ++index)
-            this.timers[index].immune && _timers.push(this.timers[index])
+            this.timers[index].bImmune && _timers.push(this.timers[index])
         this.timers = _timers
     }
     DeleteAllTimer() {
