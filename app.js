@@ -10,6 +10,7 @@ app.use(express.static(__dirname+'/view'));
 app.use(express.static(__dirname+'/resource/texture'));
 app.use(express.static(__dirname+'/resource/font'));
 app.use(express.static(__dirname+'/resource/audio'));
+app.use(express.static(__dirname+'/scripts/plugin'));
 app.use(express.static(__dirname+'/scripts'));
 
 app.get('/', function (req, res) {
