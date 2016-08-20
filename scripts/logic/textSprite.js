@@ -1,5 +1,7 @@
 "use strict"
 
+const util = require('../util/util')
+const Vector3D = util.Vector3D
 const transform = require('./transform');
 const render = require('./render');
 
@@ -39,7 +41,7 @@ module.exports = (canvas, gl) => {
         constructor(logic, text = '', size = 15, color = 'rgb(255,255,255)', font = 'RixToyGray', location, rotation, scale) {
             super(location, rotation, scale)
             this.logic = logic
-            this.vertex = logic.util.MakeVertexsData(logic.gl, 'rectData');
+            this.vertex = util.MakeVertexsData(logic.gl, 'rectData');
 
             ///temperary cached
             this.cached = {
@@ -55,16 +57,15 @@ module.exports = (canvas, gl) => {
             let _Src = generateTextTexture(text || this.cached.text, size || this.cached.size, color || this.cached.color, font || this.cached.font)
             this.Src = _Src.Src
             this.SrcRect = [0,0,_Src.width,_Src.height]
-            this.uv = this.logic.util.MakeRectUVData(this.logic.gl, _Src.width, _Src.height, this.SrcRect);
+            this.uv = util.MakeRectUVData(this.logic.gl, _Src.width, _Src.height, this.SrcRect);
         }
         GetSpriteScale() {
             const rect = this.SrcRect;
-            const SrcScale = { X: rect[2], Y: rect[3], Z: 1 };
-            return [SrcScale.X * this.Scale.X, SrcScale.Y * this.Scale.Y, SrcScale.Z * this.Scale.Z];
+            return Vector3D.C({X:rect[2], Y:rect[3], Z:1}).Multifly_Vector(this.Scale)
         }
         Render() {
             render(this.logic.gl, this.logic.program, this.vertex, this.uv,
-                this.LocationByArr, this.RotationByArr, this.logic.util.ArrayVectorMultifly(this.GetSpriteScale(), this.logic.viewportScale),
+                this.Location.ToArray(), this.Rotation.ToArray(), this.GetSpriteScale().Multifly_Vector(this.logic.viewportScale).ToArray(),
                 this.Src)
         }
     }

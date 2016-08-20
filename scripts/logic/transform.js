@@ -1,21 +1,16 @@
 'use strict'
 
+const util = require('../util/util')
+const Vector3D = util.Vector3D
+const Rotator = util.Rotator
+
 class transform {
     constructor(Location = {X:0,Y:0,Z:0}, Rotation = {Yaw:0,Pitch:0,Roll:0}, Scale = {X:1,Y:1,Z:1}) {
         this.transform = {
-            Location,
-            Rotation,
-            Scale
+            Location: Vector3D.C(Location),
+            Rotation: Rotator.C(Rotation),
+            Scale: Vector3D.C(Scale)
         }
-    }
-    get LocationByArr() {
-        return [this.Transform.Location.X, this.Transform.Location.Y, this.Transform.Location.Z];
-    }
-    get RotationByArr() {
-        return [this.Transform.Rotation.Yaw, this.Transform.Rotation.Pitch, this.Transform.Rotation.Roll];
-    }
-    get ScaleByArr() {
-        return [this.Transform.Scale.X, this.Transform.Scale.Y, this.Transform.Scale.Z];
     }
     get Location() {
         return this.Transform.Location
@@ -42,19 +37,13 @@ class transform {
         this.transform = _Transform;
     }
     MoveLocation(_Location) {
-        this.Transform.Location.X += _Location.X;
-        this.Transform.Location.Y += _Location.Y;
-        this.Transform.Location.Z += _Location.Z;
+        this.Transform.Location.Add_Vector(_Location)
     }
     MoveRotation(_Rotation) {
-        this.Transform.Rotation.Yaw += _Rotation.Yaw;
-        this.Transform.Rotation.Pitch += _Rotation.Pitch;
-        this.Transform.Rotation.Roll += _Rotation.Roll;
+        this.Transform.Rotation.Add_Rotator(_Rotation)
     }
     MoveScale(_Scale) {
-        this.Transform.Scale.X += _Scale.X;
-        this.Transform.Scale.Y += _Scale.Y;
-        this.Transform.Scale.Z += _Scale.Z;
+        this.Transform.Scale.Add_Vector(_Scale)
     }
 }
 module.exports = transform;

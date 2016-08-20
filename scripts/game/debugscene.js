@@ -1,5 +1,6 @@
 'use strict'
 
+const util = require('../util/util')
 const scene = require('../logic/scene')
 const textSprite = require('../logic/textSprite')
 
@@ -8,7 +9,7 @@ class debugscene extends scene {
         super(logic);
     }
     BeginPlay(){
-        this.textSprite = new (textSprite(this.logic.canvas, this.logic.gl))(this.logic, 'fps: ', 55, this.logic.util.RGB(255,0,255), 'RixToyGray', {X: -100, Y: 200, Z: 0})
+        this.textSprite = new (textSprite(this.logic.canvas, this.logic.gl))(this.logic, 'fps: ', 55, util.RGB(255,0,255), 'RixToyGray', {X: -100, Y: 200, Z: 0})
         this.timer = this.logic.timerManager.AddTimer(500, true)
     }
     Render(delta) {

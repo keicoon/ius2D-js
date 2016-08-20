@@ -7,25 +7,27 @@ const loadingscene = require('../game/loadingscene')
 const debugscene = require('../game/debugscene')
 const resourceManager = require('./resourceManager')
 const timerManager = require('../logic/timerManager')
-const util = require('../util')
+const util = require('../util/util')
+const Vector2D = util.Vector2D
+const Vector3D = util.Vector3D
 
 module.exports = (gl, cvs, context) => {
-    let defaultViewport = new util.Size(1080, 1920)
-    let screen = new util.Size(window.innerWidth, window.innerHeight)
-    let viewport = new util.Size()
-    let viewportScale = new util.Vector2D()
+    let defaultViewportSize = new Vector2D(1080, 1920)
+    let screen = new Vector2D(window.innerWidth, window.innerHeight)
+    let viewportSize = new Vector2D()
+    let viewportScale = new Vector3D()
 
-    viewportScale.Set((defaultViewport.Width - screen.Width) > (defaultViewport.Height - screen.Height)
-        ? screen.Width / defaultViewport.Width : screen.Height / defaultViewport.Height)
+    viewportScale.Set(defaultViewportSize.Subtract_X(screen) > defaultViewportSize.Subtract_Y(screen)
+        ? screen.Divide_X(defaultViewportSize) : screen.Divide_Y(defaultViewportSize))
 
-    if (cvs) viewport.Width = cvs.width = defaultViewport.Width * viewportScale.X, viewport.Height = cvs.height = defaultViewport.Height * viewportScale.Y
+    if (cvs) cvs.width = viewportSize.X = defaultViewportSize.Multifly_X(viewportScale), cvs.height = viewportSize.Y = defaultViewportSize.Multifly_Y(viewportScale)
     gl.viewport(0, 0, parseInt(cvs.width), +parseInt(cvs.height));
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND)
 
-    console.log('#defaultViewport', defaultViewport.Width, defaultViewport.Height)
-    console.log('#defaultScreen', screen.Width, screen.Height)
-    console.log('#currentScreen', viewport.Width, viewport.Height)
+    console.log('#defaultViewportSize', defaultViewportSize.ToString())
+    console.log('#screen', screen.ToString())
+    console.log('#viewportSize', viewportSize.ToString())
 
     //initialize
     let logic = _.extend(context, {
@@ -33,18 +35,17 @@ module.exports = (gl, cvs, context) => {
         gl,
         program: require('./shader')(gl),
         pixelMatrix: [
-            2 / viewport.Width, 0, 0, 0,
-            0, 2 / viewport.Height, 0, 0,
+            2 / viewportSize.X, 0, 0, 0,
+            0, 2 / viewportSize.Y, 0, 0,
             0, 0, 0, 0,
             0, 0, 0, 1
         ],
         resourceManager: new resourceManager(context),
         timerManager: timerManager,
         fps: ()=>fps.Getfps(),
-        util,
-        defaultViewportSize: { X: defaultViewport.Width, Y: defaultViewport.Height, Z: 1 },
-        currentViewportSize: { X: viewport.Width, Y: viewport.Height, Z: 1 },
-        viewportScale: { X: viewportScale.X, Y: viewportScale.Y, Z: 0 },
+        defaultViewportSize,
+        viewportSize,
+        viewportScale,
         ChangeScene: (prevScene, aftrScene) => {
             prevScene.pDestroy();
             prevScene = null;

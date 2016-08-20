@@ -1,26 +1,12 @@
 'use strict'
 
-class Size {
-    constructor(w,h) {
-        this.Width = w, this.Height = h
-    }
-}
-class Vector2D {
-    constructor(x,y) {
-        this.X = x, this.Y = y
-    }
-    Set(x = 0, y) {
-        y = y || x
-        this.X = x, this.Y = y
-    }
-}
+const Vector3D = require('./vector').Vector3D
+const Vector2D = require('./vector').Vector2D
+const Rotator = require('./rotator')
 
 module.exports = {
-    ArrayVectorMultifly:(a, v)=>{
-        return [a[0]*v.X,a[1]*v.Y,a[2]*v.Z]
-    },
     MakeVertexsData:(gl,bufferType)=>{
-        const data = require('./data/arraybuffer')
+        const data = require('../data/arraybuffer')
         let bufferData = data[bufferType];
     
         let vertexBuffer = gl.createBuffer();
@@ -46,7 +32,11 @@ module.exports = {
         UVBuffer.numItem = 4;
         return UVBuffer;
     },
+    ProjectViewport:(location, viewportScale)=>{
+        return Vector3D.C(location).Multifly_Vector(viewportScale)
+    },
     RGB:(r,g,b)=>'rgb('+r+','+g+','+b+')',
-    Size,
-    Vector2D
+    Vector3D,
+    Vector2D,
+    Rotator,
 }
