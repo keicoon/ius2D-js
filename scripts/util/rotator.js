@@ -13,6 +13,14 @@ class Rotator {
     ToArray() {
         return [this.Yaw, this.Pitch, this.Roll]
     }
+    Add_Rotator(_r) {
+        this.Yaw += _r.Yaw, this.Pitch += _r.Pitch, this.Roll += _r.Roll
+        return this
+    }
+    Multifly_Float(_f) {
+        this.Yaw *= _f, this.Pitch *= _f, this.Roll *= _f
+        return this
+    }
 }
 
 module.exports = Rotator

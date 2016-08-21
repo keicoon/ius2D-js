@@ -2,12 +2,12 @@
 
 const _ = require('lodash')
 
-const Fps = require('./fps')
 const SceneMap = {
     'Loadingscene': require('../game/loadingscene'),
     'Gamescene': require('../game/gamescene'),
     'Debugscene': require('../game/debugscene')
 }
+const Fps = require('./fps')
 const ResourceManager = require('./resourceManager')
 const InputManager = require('./inputManager')
 const timerManager = require('./timerManager')
