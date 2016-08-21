@@ -21,7 +21,9 @@ module.exports = (bUseKeyInput = false, bUseMouseInput = false, bUseTouchInput =
             return this.bUseMouseInput && !this.MousePositon.Compare(this._MousePositon) && ((this._MousePositon.Copy(this.MousePositon)) || true)
         }
         get GetMouse() { return this.MousePositon }
-        CheckKey(k) { return this.KeyPressed[k] }
+        CheckKey(...p) {
+            return p.some(k => this.KeyPressed[k]) 
+        }
     }
     let inputMnager = new inputManager(bUseKeyInput, bUseMouseInput, bUseTouchInput)
 

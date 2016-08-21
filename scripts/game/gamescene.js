@@ -31,13 +31,13 @@ class gamescene extends scene {
     }
     InputKey() {
         const deltaTime = this.logic.deltaTime()
-        if (this.inputManager.CheckKey('a'))
+        if (this.inputManager.CheckKey('a', 'ArrowLeft'))
             this.spriteA.MoveLocation(Vector3D.C({ X: -200 }).Multifly_Float(deltaTime))
-        if (this.inputManager.CheckKey('s'))
+        if (this.inputManager.CheckKey('s', 'ArrowDown'))
             this.spriteA.MoveLocation(Vector3D.C({ Y: -200 }).Multifly_Float(deltaTime))
-        if (this.inputManager.CheckKey('d'))
+        if (this.inputManager.CheckKey('d', 'ArrowRight'))
             this.spriteA.MoveLocation(Vector3D.C({ X: 200 }).Multifly_Float(deltaTime))
-        if (this.inputManager.CheckKey('w'))
+        if (this.inputManager.CheckKey('w', 'ArrowUp'))
             this.spriteA.MoveLocation(Vector3D.C({ Y: 200 }).Multifly_Float(deltaTime))
     }
     InputMouse() {
