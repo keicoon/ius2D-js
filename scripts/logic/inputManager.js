@@ -4,29 +4,24 @@ const _ = require('lodash')
 const util = require('../util/util')
 const Vector2D = util.Vector2D
 
-const KeyMap = {
-    A: 65,
-    W: 87,
-    D: 68,
-    S: 83,
-    SPACE: 32
-}
 module.exports = (bUseKeyInput = false, bUseMouseInput = false, bUseTouchInput = false) => {
     class inputManager {
         constructor(bUseKeyInput, bUseMouseInput, bUseTouchInput) {
-            this.KeyPressed = new Array()
+            this.KeyPressed = new Object()
             this._MousePositon = new Vector2D()
             this.MousePositon = new Vector2D()
             this.bUseKeyInput = bUseKeyInput
             this.bUseMouseInput = bUseMouseInput
             this.bUseTouchInput = bUseTouchInput
         }
-        get CheckKeyEvent() { return this.bUseKeyInput && this.KeyPressed.some(v=>v) }
+        get CheckKeyEvent() {
+            return this.bUseKeyInput && _.find(this.KeyPressed, k=>k)
+        }
         get CheckMouseEvent() {
             return this.bUseMouseInput && !this.MousePositon.Compare(this._MousePositon) && ((this._MousePositon.Copy(this.MousePositon)) || true)
         }
         get GetMouse() { return this.MousePositon }
-        CheckKey(k) { return this.KeyPressed[KeyMap[k]]}
+        CheckKey(k) { return this.KeyPressed[k] }
     }
     let inputMnager = new inputManager(bUseKeyInput, bUseMouseInput, bUseTouchInput)
 
@@ -34,10 +29,10 @@ module.exports = (bUseKeyInput = false, bUseMouseInput = false, bUseTouchInput =
         inputMnager.MousePositon.Set(e.clientX, e.clientY)
     }, false);
     bUseKeyInput && window.addEventListener("keydown", (e) => {
-        inputMnager.KeyPressed[e.keyCode] = true
+        inputMnager.KeyPressed[e.key] = true
     }, false);
     bUseKeyInput && window.addEventListener("keyup", (e) => {
-        inputMnager.KeyPressed[e.keyCode] = false
+        inputMnager.KeyPressed[e.key] = false
     }, false);
 
     return inputMnager
