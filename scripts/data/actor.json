@@ -1,0 +1,44 @@
+{
+    "SpriteActor": {
+        "name": "SpriteActor",
+        "components": [
+            {
+                "name": "Sprite2DComponent",
+                "params": {
+                    "spriteName": "test",
+                    "aN": 0,
+                    "sN": 0
+                }
+            }
+        ]
+    },
+    "AnimationActor": {
+        "name": "AnimationActor",
+        "components": [
+            {
+                "name": "Sprite2DComponent",
+                "params": {
+                    "spriteName": "test2",
+                    "aN": 0,
+                    "sN": 0
+                }
+            },
+            {
+                "name": "Animation2DComponent",
+                "params": {
+                    "aN": 0,
+                    "fps": 1000
+                }
+            }
+        ]
+    },
+    "TextSpriteActor": {
+        "name": "TextSpriteActor",
+        "components": [
+            {
+                "name": "TextSpriteComponent",
+                "params": {}
+            }
+        ]
+    }
+}

@@ -17,11 +17,10 @@ class time {
     }
 }
 class timer {
-    constructor(t, bImmune, bUseBoom) {
+    constructor(t, bImmune) {
         this.time = new time()
         this.stockTime = t
         this.bImmune = bImmune
-        this.bUseBoom = bUseBoom
         this.bBoom = false
     }
     SetTimerFunc(fn) {
@@ -33,7 +32,7 @@ class timer {
     Tick(delta) {
         if (this.bBoom) return
 
-        if (this.time.currentTime > this.stockTime && this.bUseBoom) {
+        if (this.time.currentTime > this.stockTime) {
             this.bBoom = true
             if (this.fn) {
                 this.fn()
@@ -60,8 +59,8 @@ class timerManager {
         for(let index = 0, length = this.timers.length; index < length; ++index)
             this.timers[index].Tick(delta)
     }
-    AddTimer(t = 0, bImmune = false, bUseBoom = true) {
-        let _timer = new timer(t, bImmune, bUseBoom)
+    AddTimer(t = 0, bImmune = false) {
+        let _timer = new timer(t, bImmune)
         this.timers.push(_timer)
         return _timer
     }

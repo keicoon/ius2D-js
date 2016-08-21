@@ -1,10 +1,9 @@
 'use strict'
 
-const util = require('../util/util')
-const Vector3D = util.Vector3D
-const Rotator = util.Rotator
+const Vector3D = require('../util/vector').Vector3D
+const Rotator = require('../util/rotator')
 
-class transform {
+class Transform {
     constructor(Location = {X:0,Y:0,Z:0}, Rotation = {Yaw:0,Pitch:0,Roll:0}, Scale = {X:1,Y:1,Z:1}) {
         this.transform = {
             Location: Vector3D.C(Location),
@@ -46,4 +45,4 @@ class transform {
         this.Transform.Scale.Add_Vector(_Scale)
     }
 }
-module.exports = transform;
+module.exports = Transform;

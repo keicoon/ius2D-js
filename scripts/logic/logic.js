@@ -2,17 +2,20 @@
 
 const _ = require('lodash')
 
-const fps = require('./fps')
-const loadingscene = require('../game/loadingscene')
-const debugscene = require('../game/debugscene')
-const resourceManager = require('./resourceManager')
+const Fps = require('./fps')
+const SceneMap = {
+    'Loadingscene': require('../game/loadingscene'),
+    'Gamescene': require('../game/gamescene'),
+    'Debugscene': require('../game/debugscene')
+}
+const ResourceManager = require('./resourceManager')
+const InputManager = require('./inputManager')
 const timerManager = require('./timerManager')
-const inputManager = require('./inputManager')
 const util = require('../util/util')
 const Vector2D = util.Vector2D
 const Vector3D = util.Vector3D
 
-module.exports = (gl, cvs, context) => {
+module.exports = (gl, cvs, browserContext) => {
     let defaultViewportSize = new Vector2D(1080, 1920)
     let screen = new Vector2D(window.innerWidth, window.innerHeight)
     let viewportSize = new Vector2D()
@@ -31,7 +34,7 @@ module.exports = (gl, cvs, context) => {
     console.log('#viewportSize', viewportSize.ToString())
 
     //initialize
-    let logic = _.extend(context, {
+    let context = _.extend(browserContext, {
         gameStatus: 0,
         gl,
         program: require('./shader')(gl),
@@ -41,37 +44,32 @@ module.exports = (gl, cvs, context) => {
             0, 0, 0, 0,
             0, 0, 0, 1
         ],
-        resourceManager: new resourceManager(context),
-        timerManager,
-        deltaTime: ()=>timerManager.DeltaTime(),
-        fps: ()=>fps.Getfps(),
-        inputManager: inputManager(true, false, false),
         defaultViewportSize,
         viewportSize,
         viewportScale,
-        ChangeScene: (prevScene, aftrScene) => {
-            prevScene.pDestroy();
-            prevScene = null;
-            aftrScene.pBeginPlay();
-            currentScene = aftrScene;
-        }
+        fps: ()=>Fps.Getfps(),
+        timerManager,
+        inputManager: InputManager(true, false, false),
+        ChangeScene: (nextSceneName) => {
+            currentScene.pDestroy()
+            currentScene = null
+            currentScene = new SceneMap[nextSceneName](context)
+            currentScene.pBeginPlay()
+        },
+        GetCurrentScene: () => currentScene
     })
-    
-    let currentScene = new loadingscene(logic),
-        debugScene = new debugscene(logic);
-    currentScene.pBeginPlay()
-    debugScene.BeginPlay()
+    context.resourceManager =  new ResourceManager(context)
+    let currentScene = new SceneMap['Loadingscene'](context),
+        debugScene = new SceneMap['Debugscene'](context)
+    currentScene.pBeginPlay(), debugScene.BeginPlay()
 
     setInterval(() => {
-        let delta = fps.Tickfps();
+        let delta = Fps.Tickfps();
         if (!delta) return
-
+        
         timerManager.Tick(delta)
 
-        currentScene.pUpdate(delta);
-        currentScene.pRender(delta);
-
-        debugScene.Update(delta)
-        debugScene.Render(delta)
+        currentScene.pTick(delta)
+        debugScene.Tick(delta)
     }, 0)
 }

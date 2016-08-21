@@ -11,6 +11,8 @@ class resourceManager {
         this.imgMap = new Map()
         this.audioMap = new Map()
         this.maximumResourceNum = this.currentResourceNum = 0
+        
+        this.gl = this.context.gl
     } 
     get IsLoaded() {
         return (this.currentResourceNum >= this.maximumResourceNum)
@@ -18,18 +20,18 @@ class resourceManager {
     GetStatus() {
         return 'Loading... '+ this.currentResourceNum + ' / ' + this.maximumResourceNum
     }
-    AddImage(gl, name) {
-        let texture = gl.createTexture();
+    AddImage(name) {
+        let texture = this.gl.createTexture();
         texture.img = new Image();
         texture.img.src = textureData[name].src;
         ++this.maximumResourceNum;
         
         texture.img.onload = ()=>{
-            gl.bindTexture(gl.TEXTURE_2D, texture)
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.img);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            gl.bindTexture(gl.TEXTURE_2D, null);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
+            this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, texture.img);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
             this.imgMap.set(name, {'Id':textureData[name],'Src':texture});
             ++this.currentResourceNum;
             console.log('#Loaded Image', name)
@@ -73,4 +75,4 @@ class resourceManager {
     //     })
     // }
 }
-module.exports = resourceManager;
+module.exports = resourceManager

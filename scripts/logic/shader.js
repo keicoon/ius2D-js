@@ -1,5 +1,5 @@
-const vertexShaderStr = require('../data/vertexshader')
-const fragmentShaderStr = require('../data/fragmentshader')
+const vertexShaderStr = require('../shader/vertexshader')
+const fragmentShaderStr = require('../shader/fragmentshader')
 
 module.exports = (gl) => {
     let vertexShader = gl.createShader(gl.VERTEX_SHADER)
