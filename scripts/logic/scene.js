@@ -15,18 +15,9 @@ class scene {
     pBeginPlay() {
         this.BeginPlay()
         this.bTick = true
-        
-        this.logic.inputManager.Delegate_InputKey.Add = (...p)=>{
-            this.InputKey(this, p[0], p[1])
-        }
-        this.logic.inputManager.Delegate_InputMouse.Add = (...p)=>{
-            this.InputMouse(this, p[0], p[1])
-        }
+        this.inputManager = this.logic.inputManager
     }
     pDestroy() {
-        this.logic.inputManager.Delegate_InputKey.RemoveAll()
-        this.logic.inputManager.Delegate_InputMouse.RemoveAll()
-
         this.bTick = false
         this.logic.timerManager.DeleteTimer()
 
@@ -45,7 +36,11 @@ class scene {
         this.bTick && this.Render(delta)
     }
     pUpdate(delta) {
-        this.bTick && this.Update(delta)
+        if(this.bTick) {
+            this.Update(delta)
+            this.inputManager.CheckKeyEvent && this.InputKey()
+            this.inputManager.CheckMouseEvent && this.InputMouse()
+        }
     }
     get GameStatus() {
         return eGameStatus

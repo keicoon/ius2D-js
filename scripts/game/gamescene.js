@@ -29,27 +29,19 @@ class gamescene extends scene {
     Update(delta) {
         this.animationA.Update()
     }
-    InputKey(_this, k, s) {
-        const deltaTime = _this.logic.deltaTime()
-        if(s) {
-            switch(k) {
-                case 'A':
-                    _this.spriteA.MoveLocation(Vector3D.C({X:-200}).Multifly_Float(deltaTime))
-                break
-                case 'S':
-                    _this.spriteA.MoveLocation(Vector3D.C({Y:-200}).Multifly_Float(deltaTime))
-                break
-                case 'D':
-                    _this.spriteA.MoveLocation(Vector3D.C({X:200}).Multifly_Float(deltaTime))
-                break
-                case 'W':
-                    _this.spriteA.MoveLocation(Vector3D.C({Y:200}).Multifly_Float(deltaTime))
-                break
-            }
-        }
+    InputKey() {
+        const deltaTime = this.logic.deltaTime()
+        if (this.inputManager.CheckKey('A'))
+            this.spriteA.MoveLocation(Vector3D.C({ X: -200 }).Multifly_Float(deltaTime))
+        if (this.inputManager.CheckKey('S'))
+            this.spriteA.MoveLocation(Vector3D.C({ Y: -200 }).Multifly_Float(deltaTime))
+        if (this.inputManager.CheckKey('D'))
+            this.spriteA.MoveLocation(Vector3D.C({ X: 200 }).Multifly_Float(deltaTime))
+        if (this.inputManager.CheckKey('W'))
+            this.spriteA.MoveLocation(Vector3D.C({ Y: 200 }).Multifly_Float(deltaTime))
     }
-    InputMouse(_this, x, y) {
-        console.log(x, y)
+    InputMouse() {
+        console.log(this.inputManager.GetMouse.ToString())
     }
 }
 

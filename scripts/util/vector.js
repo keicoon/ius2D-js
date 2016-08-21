@@ -86,8 +86,22 @@ class Vector2D {
     ToString() {
         return 'X: ' + this.X + ', Y: ' + this.Y
     }
-    Set(v) {
-        this.X = this.Y = v
+    Compare(_v) {
+        return this.X == _v.X && this.Y == _v.Y
+    }
+    Copy(_v) {
+        this.X = _v.X, this.Y = _v.Y
+    }
+    Set(...p) {
+        switch(p.length)
+        {
+            case 1:
+            this.X = this.Y = p[0]
+            break
+            case 2:
+            this.X = p[0], this.Y = p[1]
+            break
+        }
     }
     Subtract_X(_v) {
         return this.X - _v.X

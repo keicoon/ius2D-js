@@ -36,11 +36,11 @@ class loadingscene extends scene {
             })
         }
     }
-    InputKey(_this, k, s) {
-        console.log(k, s)
+    InputKey() {
+        // console.log(k, s)
     }
-    InputMouse(_this, x, y) {
-        console.log(x, y)
+    InputMouse() {
+        // console.log(x, y)
     }
 }
 
