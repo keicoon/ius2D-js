@@ -27,7 +27,7 @@ class Delegate {
         this._delegate.push(_f)
     }
     set Remove(_f) {
-        this._delegate.splice(_.findIndex(this._delegate, (f)=>Object.is(f, _f)), 1)
+        _.remove(this._delegate, (f)=>Object.is(f, _f))
     }
     RemoveAll() {
         this._delegate = []

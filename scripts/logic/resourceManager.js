@@ -57,10 +57,10 @@ class resourceManager {
     AddAudio(name, loop = false) {
         ++this.maximumResourceNum
         let sound = new Howl({
-            src: [audioPath[name]],
-            loop
+            src: [audioPath[name]]
         })
         sound.on('load', ()=>{
+            sound.loop = loop
             this.audioMap.set(name, sound)
             ++this.currentResourceNum;
             console.log('#Loaded Audio', name)

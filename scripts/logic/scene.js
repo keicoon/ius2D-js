@@ -19,7 +19,7 @@ class scene {
     pBeginPlay() {
         this.BeginPlay()
         this.bTick = true
-        this.inputManager = this.context.inputManager
+        this.controller = this.context.controller
     }
     pDestroy() {
         this.bTick = false
@@ -42,8 +42,9 @@ class scene {
         if(this.bTick) {
             _.forEach(this.actors, a=>a.Tick(delta))
             this.Tick(delta)
-            this.inputManager.CheckKeyEvent && this.InputKey()
-            this.inputManager.CheckMouseEvent && this.InputMouse()
+            ///@ UI Input
+            this.InputKey()
+            this.InputMouse()
         }
     }
     ProjectionViewport(loc) {

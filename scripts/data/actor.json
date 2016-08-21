@@ -3,7 +3,7 @@
         "name": "SpriteActor",
         "components": [
             {
-                "name": "Sprite2DComponent",
+                "name": "sprite2d",
                 "params": {
                     "spriteName": "test",
                     "aN": 0,
@@ -16,7 +16,7 @@
         "name": "AnimationActor",
         "components": [
             {
-                "name": "Sprite2DComponent",
+                "name": "sprite2d",
                 "params": {
                     "spriteName": "test2",
                     "aN": 0,
@@ -24,7 +24,7 @@
                 }
             },
             {
-                "name": "Animation2DComponent",
+                "name": "animation2d",
                 "params": {
                     "aN": 0,
                     "fps": 1000
@@ -36,8 +36,22 @@
         "name": "TextSpriteActor",
         "components": [
             {
-                "name": "TextSpriteComponent",
+                "name": "textsprite",
                 "params": {}
+            }
+        ]
+    },
+    "AudioClipActor": {
+        "name": "AudioClipActor",
+        "components": [
+            {
+                "name": "audioclip",
+                "params": {
+                    "audioName": "you",
+                    "volume": 1,
+                    "bLoop": true,
+                    "bAutoplay": false
+                }
             }
         ]
     }

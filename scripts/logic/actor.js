@@ -13,24 +13,26 @@ class Actor {
         this.uid = this.name + '_' + (uid++) 
         
         const params = actorData[actorName]
-        if(params) this.components = _.map(params.components, c => new Component[c.name](this, c.params))
+        this.components = _.map(params.components, c => new Component[c.name](this, c.params))
         
         this.transform = new Transform(Location, Rotation, Scale)
         
         this._componentsCached = new Map()
         this.bUsingCustomTick = false
     }
-    Spawn(scene) {
+    Spawn(scene , bController = false) {
         this.BeginPlay()
         scene = scene || this.context.GetCurrentScene()
         scene.actors.push(this)
+        bController && this.context.controller.Posess(this, scene)
     }
     DeSpawn() {
         this.Destroy()
         const scene = this.context.GetCurrentScene()
-        scene.actors.splice(_.findIndex(scene.actors, a=>a.uid == this.uid), 1)
+        _.remove(scene.actors, a=>a.uid == this.uid)
     }
     Tick(delta) {
+        this.bController && this.context.controller.Tick(delta)
         _.forEach(this.components, c => c.pTick(delta))
         // if (this.bUsingCustomTick) {
         //     this.CustomTick(delta)
@@ -47,9 +49,21 @@ class Actor {
         if(!c) c = this._componentsCached[_name] = _.find(this.components, c => c.name == _name) 
         return c
     }
-    AddComponent(_name, _params) {
+    AttachComponent(_name, _params) {
         let c = this.GetComponent(_name)
-        if(!c) this.components.push(new components[_name](this, _params))
+        if(!c) {
+            c = new Component[_name](this, _params)
+            this.components.push(c)
+            c.BeginPlay()
+        }
+    }
+    DetachComponent(_name) {
+        let c = this.GetComponent(_name)
+        if(c) {
+            c.Destroy()
+            _.remove(this.components, c => c.name == _name)
+            this._componentsCached[_name] = null
+        }
     }
     MoveLocation(_Location) {
         this.transform.MoveLocation(_Location)

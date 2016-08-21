@@ -7,10 +7,11 @@ const SceneMap = {
     'Gamescene': require('../game/gamescene'),
     'Debugscene': require('../game/debugscene')
 }
+const PlayerController = require('../game/playercontroller')
 const Fps = require('./fps')
 const ResourceManager = require('./resourceManager')
-const InputManager = require('./inputManager')
 const timerManager = require('./timerManager')
+const controller = require('./controller')
 const util = require('../util/util')
 const Vector2D = util.Vector2D
 const Vector3D = util.Vector3D
@@ -49,7 +50,7 @@ module.exports = (gl, cvs, browserContext) => {
         viewportScale,
         fps: ()=>Fps.Getfps(),
         timerManager,
-        inputManager: InputManager(true, false, false),
+        controller: new PlayerController(true, false, false),
         ChangeScene: (nextSceneName) => {
             currentScene.pDestroy()
             currentScene = null
