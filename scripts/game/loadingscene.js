@@ -12,7 +12,7 @@ class loadingscene extends scene {
     BeginPlay() {
         this.resourceManager.AddImage('test')
         this.resourceManager.AddImage('test2')
-        this.resourceManager.AddAudio('you', true)
+        this.resourceManager.AddAudio('test_audio', true)
         this.resourceManager.AddAllFont()
         this.CurrentGameStatus = this.GameStatus.ResourceLoading
 

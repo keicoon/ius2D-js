@@ -1,5 +1,3 @@
 {
-    "Reminiscence": "./Reminiscence.mp3",
-    "you": "./you.mp3",
-    "touhouproject": "./touhouproject.mp3"
+    "test_audio": "./test_audio.mp3"
 }
