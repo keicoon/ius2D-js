@@ -1,3 +1,6 @@
 [submodule "scripts/plugin/howler.js"]
 	path = scripts/plugin/howler.js
 	url = https://github.com/goldfire/howler.js.git
+[submodule "scripts/plugin/spine-runtimes"]
+	path = scripts/plugin/spine-runtimes
+	url = https://github.com/keicoon/spine-runtimes
