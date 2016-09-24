@@ -20,14 +20,14 @@ class loadingscene extends scene {
         this.textActor.GetComponent('textsprite').ChangeText('', 30, undefined, undefined, 'center')
         this.timer = this.context.timerManager.AddTimer(500, true)
 
-        this.rock = false
+        this.lock = false
     }
     Destroy() {}
     Tick(delta) {
         if(this.timer.IsBoom())
             this.textActor.GetComponent('textsprite').ChangeText(this.resourceManager.GetStatus())
-        if(!this.rock && this.resourceManager.IsLoaded) {
-            this.rock = true
+        if(!this.lock && this.resourceManager.IsLoaded) {
+            this.lock = true
             //@lazy delay loading
             this.timer = this.context.timerManager.AddTimer(500)
             this.timer.SetTimerFunc(()=>{
