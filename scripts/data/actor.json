@@ -54,5 +54,16 @@
                 }
             }
         ]
+    },
+    "Spine2DActor": {
+        "name": "Spine2DActor",
+        "components": [
+            {
+                "name": "spine2d",
+                "params": {
+                    "name": "spineboy"
+                }
+            }
+        ]
     }
 }

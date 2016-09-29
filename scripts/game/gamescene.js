@@ -19,13 +19,15 @@ class gamescene extends scene {
         }) 
         this.C = new Actor(this.context, 'TextSpriteActor', this.ProjectionViewport({X:-540, Y:-200}))
         this.bgm = new Actor(this.context, "AudioClipActor")
+        this.S = new Actor(this.context, 'Spine2DActor')
     }
     BeginPlay() {
         this.A.Spawn(this, true)
         _.forEach(this.BS, a=>a.Spawn())
         this.C.Spawn()
         this.bgm.Spawn()
-
+        this.S.Spawn()
+        
         this.C.GetComponent('textsprite').ChangeText(
             '하이요! 이게 얼마나 길게 써지는데 테스트 해보고 싶어요', 
             55, util.RGB(255,255,0), 'RixToyGray')
