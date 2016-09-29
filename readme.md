@@ -11,6 +11,7 @@ browserify
 watchify
 lodash
 howler
+spine2d
 ```
 #Start
 * install [node.js](https://nodejs.org/en/)
