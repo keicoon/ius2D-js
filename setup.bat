@@ -12,4 +12,7 @@ if exist "C:\Program Files\nodejs" (
 git submodule init
 git submodule update
 
+git lfs fetch
+git lfs pull
+
 pause
