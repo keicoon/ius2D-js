@@ -174,7 +174,7 @@ class AudioClipComponent extends Component {
             const ratio = 1000 / audioListner.radius
             const listenerPos = audioListner.GetListenerLocation()
             this.audioClip.pos(
-                _.clamp(-listenerPos.X * ratio, -1000, 1000), _.clamp(-listenerPos.Y * ratio, -1000, 1000), -1,
+                _.clamp(-listenerPos.X * ratio, -1000, 1000), _.clamp(-listenerPos.Y * ratio, -1000, 1000), -10 / this.Volume,
                  this.audioId)
             const pos = this.owner.transform.Location
             this.audioClip.orientation(pos.X, pos.Y, 0, this.audioId)
@@ -196,6 +196,14 @@ class AudioClipComponent extends Component {
     }
     Stop() {
         this.audioClip.stop()
+    }
+    get Volume() {
+        return this.audioClip.volume
+    }
+    set Volume(value) {
+        this.volume = value
+        const audioListner = this.context.controller.GetControlPlayer.GetComponent('audiolistener')
+        this.audioClip.volume = _.clamp(lerp(0.8, this.volume, audioListner.Volume), 0, 1)
     }
 }
 ///@ existed only one audiolistener in world
@@ -219,7 +227,7 @@ class Spine2DComponent extends Component {
         this.resourceManager = this.context.resourceManager
         this.vertex = util.MakeVertexsData(this.context.gl, 'rectData')
 
-        this.name = params.name
+        this.spineName = params.spineName
 
         this.skeletonData = null
         this.state = null
@@ -244,8 +252,7 @@ class Spine2DComponent extends Component {
 			let rotation = (bone.getWorldRotationX() - attachment.rotation) * degrad
 			let w = attachment.width * bone.getWorldScaleX(), h = attachment.height * bone.getWorldScaleY()
 
-            render(this.context.gl, this.context.program, this.vertex,
-                util.MakeRectUVData(this.context.gl, GetPowerOfTwo(w), GetPowerOfTwo(h), [0, 0, w, h]),
+            render(this.context.gl, this.context.program, this.vertex, attachment.uv,
                 util.Vector3D.C({ X: x, Y: -y, Z: 0 }).Add_Vector(this.owner.transform.Location).ToArray(),
                 util.Rotator.C({ Roll: rotation }).Add_Rotator(this.owner.transform.Rotation).ToArray(),
                 this.GetSpriteScale(w, h).Multifly_Vector(vs).ToArray(),
@@ -253,12 +260,15 @@ class Spine2DComponent extends Component {
         }
     }
     BeginPlay() {
-        const spine_data = this.resourceManager.GetSpine(this.name)
+        const gl = this.context.gl
+        const spine_data = this.resourceManager.GetSpine(this.spineName)
         let json = new spine.SkeletonJson({
             newRegionAttachment: function (skin, name, path) {
                 let attachment = new spine.RegionAttachment(name)
                 const imgData = spine_data.src.get(name)
                 attachment.rendererObject = imgData.Image
+                const w = imgData.Image.width, h = imgData.Image.height
+                attachment.uv = util.MakeRectUVData(gl, GetPowerOfTwo(w), GetPowerOfTwo(h), [0, 0, w, h])
                 attachment.texture = imgData.Src
                 return attachment
             },
@@ -266,7 +276,7 @@ class Spine2DComponent extends Component {
                 return new spine.BoundingBoxAttachment(name)
             }
         });
-        //@TODO
+
         json.scale = (this.owner.transform.Scale.X + this.owner.transform.Scale.Y) * 0.5
         this.skeletonData = json.readSkeletonData(spine_data.skelatal)
         spine.Bone.yDown = true
@@ -275,16 +285,19 @@ class Spine2DComponent extends Component {
 
         let stateData = new spine.AnimationStateData(this.skeletonData)
         this.state = new spine.AnimationState(stateData)
-
-        //@TODO:
-        this.state.data.defaultMix = 0.4;
-        this.state.setAnimationByName(0, "walk", true);
-        this.state.addAnimationByName(0, "jump", false, 3);
-        this.state.addAnimationByName(0, "run", true, 0);
     }
     GetSpriteScale(w, h) {
         const scale = this.owner.transform.Scale
         return Vector3D.C({ X: w, Y: h, Z: 1 }).Multifly_Vector(scale)
+    }
+    SetDefaultMix(defaultMix) {
+        this.state.data.defaultMix = defaultMix
+    }
+    SetAnimationByName(trackIndex, animationName, loop) {
+        this.state.setAnimationByName(trackIndex, animationName, loop)
+    }
+    AddAnimationByName(trackIndex, animationName, loop, delay) {
+        this.state.addAnimationByName(trackIndex, animationName, loop, delay)
     }
 }
 module.exports = {

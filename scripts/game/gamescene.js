@@ -33,6 +33,11 @@ class gamescene extends scene {
             55, util.RGB(255,255,0), 'RixToyGray')
         
         this.bgm.GetComponent('audioclip').Play()
+
+        this.S.GetComponent('spine2d').SetDefaultMix(0.4)
+        this.S.GetComponent('spine2d').SetAnimationByName(0, "walk", true)
+        this.S.GetComponent('spine2d').AddAnimationByName(0, "jump", false, 3)
+        this.S.GetComponent('spine2d').AddAnimationByName(0, "run", true, 0)
     }
     Destroy() {}
     Tick(delta) {
