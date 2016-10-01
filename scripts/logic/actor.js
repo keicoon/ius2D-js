@@ -12,8 +12,8 @@ class Actor {
         this.context = context
         this.uid = this.name + '_' + (uid++) 
         
-        const params = actorData[actorName]
-        this.components = _.map(params.components, c => new Component[c.name](this, c.params))
+        const params = _.find(actorData, a => a.$type === actorName)
+        if(params) this.components = _.map(params.components, c => new Component[c.$type](this, c.params))
         
         this.transform = new Transform(Location, Rotation, Scale)
         

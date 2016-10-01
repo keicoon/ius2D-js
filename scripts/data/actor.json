@@ -1,9 +1,9 @@
 {
     "SpriteActor": {
-        "name": "SpriteActor",
+        "$type": "SpriteActor",
         "components": [
             {
-                "name": "sprite2d",
+                "$type": "sprite2d",
                 "params": {
                     "spriteName": "test",
                     "aN": 0,
@@ -13,10 +13,10 @@
         ]
     },
     "AnimationActor": {
-        "name": "AnimationActor",
+        "$type": "AnimationActor",
         "components": [
             {
-                "name": "sprite2d",
+                "$type": "sprite2d",
                 "params": {
                     "spriteName": "test2",
                     "aN": 0,
@@ -24,7 +24,7 @@
                 }
             },
             {
-                "name": "animation2d",
+                "$type": "animation2d",
                 "params": {
                     "aN": 0,
                     "fps": 1000
@@ -33,19 +33,19 @@
         ]
     },
     "TextSpriteActor": {
-        "name": "TextSpriteActor",
+        "$type": "TextSpriteActor",
         "components": [
             {
-                "name": "textsprite",
+                "$type": "textsprite",
                 "params": {}
             }
         ]
     },
     "AudioClipActor": {
-        "name": "AudioClipActor",
+        "$type": "AudioClipActor",
         "components": [
             {
-                "name": "audioclip",
+                "$type": "audioclip",
                 "params": {
                     "audioName": "test_audio",
                     "volume": 1,
@@ -56,12 +56,12 @@
         ]
     },
     "Spine2DActor": {
-        "name": "Spine2DActor",
+        "$type": "Spine2DActor",
         "components": [
             {
-                "name": "spine2d",
+                "$type": "spine2d",
                 "params": {
-                    "name": "spineboy"
+                    "spineName": "spineboy"
                 }
             }
         ]
