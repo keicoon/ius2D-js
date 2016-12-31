@@ -9,10 +9,6 @@
     "watchify": "^3.7.0",
     "lodash": "^4.15.0"
   },
-  "devDependencies": {
-    "browserify": "latest",
-    "watchify": "latest"
-  },
   "scripts": {
     "watch-js": "watchify scripts/main.js -o scripts/bundle.js -v"
   },

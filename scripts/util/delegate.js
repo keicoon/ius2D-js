@@ -2,35 +2,26 @@
 
 const _ = require('lodash')
 
-class Delegate {
-    constructor(_pn) {
+module.exports = class Delegate {
+
+    constructor() {
         this._delegate = new Array()
-        this.pn = _pn
     }
-    BroadCast(...p) {
-        switch(this.pn) {
-            case 0:
-            _(this._delegate).forEach(f=>f())
-            break
-            case 1:
-            _(this._delegate).forEach(f=>f(p[0]))
-            break
-            case 2:
-            _(this._delegate).forEach(f=>f(p[0], p[1]))
-            break
-            case 3:
-            _(this._delegate).forEach(f=>f(p[0], p[1], p[2]))
-            break
-        }
+
+    BroadCast(...params) {
+        _(this._delegate).forEach(f=>f.apply(null, params))
     }
+    
+    RemoveAll() {
+        this._delegate.length = 0
+    }
+
     set Add(_f) {
         this._delegate.push(_f)
     }
+    // TODO: replace 'lodash remove'
     set Remove(_f) {
         _.remove(this._delegate, (f)=>Object.is(f, _f))
     }
-    RemoveAll() {
-        this._delegate = []
-    }
+
 }
-module.exports = Delegate

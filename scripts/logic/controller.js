@@ -5,9 +5,9 @@ const util = require('../util/util')
 const Vector2D = util.Vector2D
 const Delegate = util.Delegate
 
-let MouseMoveDelegate = new Delegate(2),
-    KeyDownDelegate = new Delegate(1),
-    KeyUpDelegate = new Delegate(1)
+let MouseMoveDelegate = new Delegate(),
+    KeyDownDelegate = new Delegate(),
+    KeyUpDelegate = new Delegate()
 
 window.addEventListener("mousemove", (e) => {
     MouseMoveDelegate.BroadCast(e.clientX, e.clientY)
