@@ -1,0 +1,12 @@
+{
+    "haru": {
+        "type": "Live2D Model Setting",
+        "name": "haru",
+        "model": "haru/haru.moc",
+        "textures": [
+            "haru/haru.1024/texture_00.png",
+            "haru/haru.1024/texture_01.png",
+            "haru/haru.1024/texture_02.png"
+        ]
+    }
+}

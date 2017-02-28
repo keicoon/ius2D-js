@@ -10,6 +10,7 @@ class loadingscene extends scene {
         this.textActor = new Actor(this.context, 'TextSpriteActor')
     }
     BeginPlay() {
+        this.resourceManager.AddLive2D('haru')
         this.resourceManager.AddSpine('spineboy')
         this.resourceManager.AddImage('test')
         this.resourceManager.AddImage('test2')

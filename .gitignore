@@ -6,3 +6,6 @@ scripts/bundle.js
 
 #ignore
 *.db
+
+#private plugin
+scripts/plugin/live2d/*
