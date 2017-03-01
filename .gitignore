@@ -8,4 +8,4 @@ scripts/bundle.js
 *.db
 
 #private plugin
-scripts/plugin/live2d/*
+scripts/plugin/live2d/*.js
