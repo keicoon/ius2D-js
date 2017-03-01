@@ -22,26 +22,26 @@ class Component {
         this.tickCondition = () => true
     }
     pTick(delta) {
-        if((this.curTickDelta += delta) - this.prevTickDelta >= this.tickInterval && this.tickCondition()) {
+        if ((this.curTickDelta += delta) - this.prevTickDelta >= this.tickInterval && this.tickCondition()) {
             this.currentDelta = this.prevDelta = 0
             this.Tick(delta)
         }
     }
-    BeginPlay() {}
-    Destroy() {}
-    Debug() {}
+    BeginPlay() { }
+    Destroy() { }
+    Debug() { }
 }
 const render = require('./render')
 class Sprite2DComponent extends Component {
     constructor(owner, params) {
         super(owner, 'sprite2d')
-        
-        this.spriteName = params.spriteName  
+
+        this.spriteName = params.spriteName
         this.aN = params.aN || 0
         this.sN = params.sN || 0
     }
     Tick() {
-        render(this.context.gl, this.context.program, this.vertex, this.uv,
+        render(this.context.gl, this.context.program, this.context.pixelMatrix, this.vertex, this.uv,
             this.owner.transform.Location.ToArray(), this.owner.transform.Rotation.ToArray(),
             this.GetSpriteScale().Multifly_Vector(this.context.viewportScale).ToArray(),
             this.Src)
@@ -52,13 +52,13 @@ class Sprite2DComponent extends Component {
         this.SetSprite(this.spriteName, this.aN, this.sN)
     }
     SetSprite(spriteName, aN, sN) {
-        if(spriteName != undefined) {
+        if (spriteName != undefined) {
             this.spriteName = spriteName
             const imgData = this.resourceManager.GetImage(spriteName)
             this.Id = imgData.Id
             this.Src = imgData.Src
         }
-        if(aN != undefined && sN != undefined) {
+        if (aN != undefined && sN != undefined) {
             this.aN = aN, this.sN = sN
             this.uv = util.MakeRectUVData(this.context.gl, this.Id.width, this.Id.height, this.Id.animation[this.aN][this.sN])
         }
@@ -66,13 +66,13 @@ class Sprite2DComponent extends Component {
     GetSpriteScale() {
         const rect = this.Id.animation[this.aN][this.sN]
         const scale = this.owner.transform.Scale
-        return Vector3D.C({X:rect[2], Y:rect[3], Z:1}).Multifly_Vector(scale)
+        return Vector3D.C({ X: rect[2], Y: rect[3], Z: 1 }).Multifly_Vector(scale)
     }
 }
 class Animation2DComponent extends Component {
     constructor(owner, params) {
         super(owner, 'animation2d')
-        
+
         this.aN = params.aN || 0
         this.fps = params.fps || 1000
     }
@@ -94,8 +94,8 @@ class Animation2DComponent extends Component {
     }
     SetAnimation(spriteName, aN, fps) {
         this.aN = aN || this.aN, this.fps = fps || this.fps
-        
-        this.currentFrame = this.time= 0
+
+        this.currentFrame = this.time = 0
         this.sprite2DComp.SetSprite(spriteName, this.aN, this.currentFrame)
         this.frame = this.sprite2DComp.Id.animation[this.aN].length
     }
@@ -106,12 +106,12 @@ class TextSpriteComponent extends Component {
 
         this.text = params.text || ''
         this.size = params.size || 15
-        this.color = params.color || util.RGB(255,255,255)
+        this.color = params.color || util.RGB(255, 255, 255)
         this.font = params.font || 'Arial'
         this.textAlign = params.textAlign || 'left'
     }
     Tick() {
-        render(this.gl, this.context.program, this.vertex, this.uv,
+        render(this.gl, this.context.program, this.context.pixelMatrix, this.vertex, this.uv,
             this.owner.transform.Location.ToArray(), this.owner.transform.Rotation.ToArray(),
             this.GetSpriteScale().Multifly_Vector(this.context.viewportScale).ToArray(),
             this.Src)
@@ -169,13 +169,13 @@ class AudioClipComponent extends Component {
         this.bAutoplay = params.autoplay || false
     }
     Tick() {
-        if(this.audioId && this.audioClip.playing(this.audioId)) {    
+        if (this.audioId && this.audioClip.playing(this.audioId)) {
             const audioListner = this.context.controller.GetControlPlayer.GetComponent('audiolistener')
             const ratio = 1000 / audioListner.radius
             const listenerPos = audioListner.GetListenerLocation()
             this.audioClip.pos(
                 _.clamp(-listenerPos.X * ratio, -1000, 1000), _.clamp(-listenerPos.Y * ratio, -1000, 1000), -10 / this.Volume,
-                 this.audioId)
+                this.audioId)
             const pos = this.owner.transform.Location
             this.audioClip.orientation(pos.X, pos.Y, 0, this.audioId)
         }
@@ -214,8 +214,8 @@ class AudioListenerComponent extends Component {
         this.volume = 0.1
         this.radius = 1000 * 500
     }
-    Tick() {}
-    BeginPlay() {}
+    Tick() { }
+    BeginPlay() { }
     GetListenerLocation() { return this.owner.transform.Location }
     get Volume() { return this.volume }
     set Volume(_v) { this.volume = _v }
@@ -238,22 +238,22 @@ class Spine2DComponent extends Component {
         const vs = this.context.viewportScale
         //@update
         this.state.update(delta * 0.001)
-		this.state.apply(this.skeleton)
-		this.skeleton.updateWorldTransform()
+        this.state.apply(this.skeleton)
+        this.skeleton.updateWorldTransform()
         //@render
         let skeleton = this.skeleton, drawOrder = skeleton.drawOrder
-		for (let i = 0, n = drawOrder.length; i < n; i++) {
-			let slot = drawOrder[i]
-			let attachment = slot.attachment
-			if (!(attachment instanceof spine.RegionAttachment)) continue
-			let bone = slot.bone
-			let x = (skeleton.x + attachment.x * bone.a + attachment.y * bone.b + bone.worldX) * vs.X
-			let y = (skeleton.y + attachment.x * bone.c + attachment.y * bone.d + bone.worldY) * vs.Y
-			let rotation = (bone.getWorldRotationX() - attachment.rotation) * degrad
-			let w = attachment.width * bone.getWorldScaleX(), h = attachment.height * bone.getWorldScaleY()
-
-            render(this.context.gl, this.context.program, this.vertex, attachment.uv,
-                util.Vector3D.C({ X: x, Y: -y, Z: 0 }).Add_Vector(this.owner.transform.Location).ToArray(),
+        for (let i = 0, n = drawOrder.length; i < n; i++) {
+            let slot = drawOrder[i]
+            let attachment = slot.attachment
+            if (!(attachment instanceof spine.RegionAttachment)) continue
+            let bone = slot.bone
+            let x = (skeleton.x + attachment.x * bone.a + attachment.y * bone.b + bone.worldX) * vs.X
+            let y = (skeleton.y + attachment.x * bone.c + attachment.y * bone.d + bone.worldY) * vs.Y
+            let rotation = (bone.getWorldRotationX() - attachment.rotation) * degrad
+            let w = attachment.width * bone.getWorldScaleX(), h = attachment.height * bone.getWorldScaleY()
+            
+            render(this.context.gl, this.context.program, this.context.pixelMatrix, this.vertex, attachment.uv,
+                util.Vector3D.C({ X: x, Y: y, Z: 0 }).Add_Vector(this.owner.transform.Location).ToArray(),
                 util.Rotator.C({ Roll: rotation }).Add_Rotator(this.owner.transform.Rotation).ToArray(),
                 this.GetSpriteScale(w, h).Multifly_Vector(vs).ToArray(),
                 attachment.texture)
@@ -268,7 +268,7 @@ class Spine2DComponent extends Component {
                 const imgData = spine_data.src.get(name)
                 attachment.rendererObject = imgData.Image
                 const w = imgData.Image.width, h = imgData.Image.height
-                attachment.uv = util.MakeRectUVData(gl, GetPowerOfTwo(w), GetPowerOfTwo(h), [0, 0, w, h])
+                attachment.uv = util.MakeRectUVData(gl, GetPowerOfTwo(w), GetPowerOfTwo(h), [0, 0, w, -h])
                 attachment.texture = imgData.Src
                 return attachment
             },
@@ -305,79 +305,40 @@ class Live2DComponent extends Component {
         super(owner, 'live2d')
 
         this.resourceManager = this.context.resourceManager
-        this.vertex = util.MakeVertexsData(this.context.gl, 'rectData')
 
-        this.spineName = params.spineName
+        this.live2dName = params.live2dName
 
-        this.skeletonData = null
-        this.state = null
-        this.skeleton = null
+        this.live2DModel = null
     }
     Tick(delta) {
-        const degrad = 0.01745
-        const vs = this.context.viewportScale
-        //@update
-        this.state.update(delta * 0.001)
-		this.state.apply(this.skeleton)
-		this.skeleton.updateWorldTransform()
-        //@render
-        let skeleton = this.skeleton, drawOrder = skeleton.drawOrder
-		for (let i = 0, n = drawOrder.length; i < n; i++) {
-			let slot = drawOrder[i]
-			let attachment = slot.attachment
-			if (!(attachment instanceof spine.RegionAttachment)) continue
-			let bone = slot.bone
-			let x = (skeleton.x + attachment.x * bone.a + attachment.y * bone.b + bone.worldX) * vs.X
-			let y = (skeleton.y + attachment.x * bone.c + attachment.y * bone.d + bone.worldY) * vs.Y
-			let rotation = (bone.getWorldRotationX() - attachment.rotation) * degrad
-			let w = attachment.width * bone.getWorldScaleX(), h = attachment.height * bone.getWorldScaleY()
+        var t = UtSystem.getTimeMSec() * 0.001 * 2 * Math.PI; //1秒ごとに2π(1周期)増える
+        var cycle = 3.0; //パラメータが一周する時間(秒)
+        // PARAM_ANGLE_Xのパラメータが[cycle]秒ごとに-30から30まで変化する
+        this.live2DModel.setParamFloat("PARAM_ANGLE_X", 30 * Math.sin(t / cycle));
 
-            render(this.context.gl, this.context.program, this.vertex, attachment.uv,
-                util.Vector3D.C({ X: x, Y: -y, Z: 0 }).Add_Vector(this.owner.transform.Location).ToArray(),
-                util.Rotator.C({ Roll: rotation }).Add_Rotator(this.owner.transform.Rotation).ToArray(),
-                this.GetSpriteScale(w, h).Multifly_Vector(vs).ToArray(),
-                attachment.texture)
-        }
+        this.live2DModel.update();
+        this.live2DModel.draw();
     }
     BeginPlay() {
-        const gl = this.context.gl
-        const spine_data = this.resourceManager.GetSpine(this.spineName)
-        let json = new spine.SkeletonJson({
-            newRegionAttachment: function (skin, name, path) {
-                let attachment = new spine.RegionAttachment(name)
-                const imgData = spine_data.src.get(name)
-                attachment.rendererObject = imgData.Image
-                const w = imgData.Image.width, h = imgData.Image.height
-                attachment.uv = util.MakeRectUVData(gl, GetPowerOfTwo(w), GetPowerOfTwo(h), [0, 0, w, h])
-                attachment.texture = imgData.Src
-                return attachment
-            },
-            newBoundingBoxAttachment: function (skin, name) {
-                return new spine.BoundingBoxAttachment(name)
-            }
-        });
+        this.gl = this.context.gl
 
-        json.scale = (this.owner.transform.Scale.X + this.owner.transform.Scale.Y) * 0.5
-        this.skeletonData = json.readSkeletonData(spine_data.skelatal)
-        spine.Bone.yDown = true
+        const live2d_data = this.resourceManager.GetLive2D(this.live2dName)
 
-        this.skeleton = new spine.Skeleton(this.skeletonData)
+        this.live2DModel = Live2DModelWebGL.loadModel(live2d_data.model);
+        _.each(live2d_data.src, (texture, index) => {
+            this.live2DModel.setTexture(index, texture)
+        })
 
-        let stateData = new spine.AnimationStateData(this.skeletonData)
-        this.state = new spine.AnimationState(stateData)
-    }
-    GetSpriteScale(w, h) {
-        const scale = this.owner.transform.Scale
-        return Vector3D.C({ X: w, Y: h, Z: 1 }).Multifly_Vector(scale)
-    }
-    SetDefaultMix(defaultMix) {
-        this.state.data.defaultMix = defaultMix
-    }
-    SetAnimationByName(trackIndex, animationName, loop) {
-        this.state.setAnimationByName(trackIndex, animationName, loop)
-    }
-    AddAnimationByName(trackIndex, animationName, loop, delay) {
-        this.state.addAnimationByName(trackIndex, animationName, loop, delay)
+        this.live2DModel.setGL(this.gl);
+
+        const s = 2.0 / this.live2DModel.getCanvasWidth();
+        const matrix4x4 = [
+            s, 0, 0, 0,
+            0, -s, 0, 0,
+            0, 0, 1, 0,
+            -1.0, 1, 0, 1];
+
+        this.live2DModel.setMatrix(matrix4x4);
     }
 }
 module.exports = {

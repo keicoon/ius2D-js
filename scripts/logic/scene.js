@@ -31,13 +31,9 @@ class scene {
     }
     pTick(delta) {
         const gl = this.context.gl;
-        const program = this.context.program;
-        const pixelMatrix = this.context.pixelMatrix;
         
         gl.clearColor(0, 0, 0, 1)
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-        gl.useProgram(program)
-        gl.uniformMatrix4fv(program.uPixelMatrix, false, pixelMatrix)
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)        
 
         if(this.bTick) {
             _.forEach(this.actors, a=>a.Tick(delta))

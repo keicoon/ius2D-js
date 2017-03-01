@@ -57,6 +57,7 @@ class resourceManager {
 
         img.onload = () => {
             let texture = this.gl.createTexture();
+
             this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
             this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, img);
             this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
@@ -123,6 +124,7 @@ class resourceManager {
                 ctx.drawImage(img, 0, 0, img.width, img.height)
 
                 let texture = this.gl.createTexture();
+
                 this.gl.bindTexture(this.gl.TEXTURE_2D, texture)
                 this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, canvas);
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
@@ -141,11 +143,11 @@ class resourceManager {
     }
     AddLive2D(name) {
         const live2d_data = live2dData[name]
-        this.live2dMap.set(name, { src: new Map(), model: null })
+        this.live2dMap.set(name, { src: [], model: null })
 
         ++this.maximumResourceNum;
         ReadBinaryFile(live2d_data.model, (model_binary) => {
-            this.live2dMap.get(name).model = model_binary;
+            this.live2dMap.get(name).model = model_binary.buffer;
             ++this.currentResourceNum;
             console.log('#Loaded Live2DModel', name + '/' + live2d_data.model)
         })
@@ -157,18 +159,20 @@ class resourceManager {
 
             img.onload = () => {
                 let texture = this.gl.createTexture();
-                // this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-                // this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
-                // this.gl.activeTexture(this.gl.TEXTURE0);
+
                 this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+                this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+                this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
+                
                 this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, img);
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_NEAREST);
-                // this.gl.generateMipmap(this.gl.TEXTURE_2D);
+                this.gl.generateMipmap(this.gl.TEXTURE_2D);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
                 const imgKey = _.first(_.split(_.last(_.split(img.src, '/')), '.'))
-                this.live2dMap.get(name).src.set(imgKey, { 'Image': img, 'Src': texture })
+                this.live2dMap.get(name).src.push(texture)
                 ++this.currentResourceNum;
                 console.log('#Loaded Live2DImage', name + '/' + imgKey)
             }

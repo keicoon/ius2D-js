@@ -26,7 +26,8 @@ module.exports = (gl, cvs, browserContext) => {
         ? screen.Divide_X(defaultViewportSize) : screen.Divide_Y(defaultViewportSize))
 
     if (cvs) cvs.width = viewportSize.X = defaultViewportSize.Multifly_X(viewportScale), cvs.height = viewportSize.Y = defaultViewportSize.Multifly_Y(viewportScale)
-    gl.viewport(0, 0, parseInt(cvs.width), +parseInt(cvs.height));
+
+    gl.viewport(0, 0, parseInt(cvs.width), parseInt(cvs.height));
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND)
 
@@ -41,7 +42,7 @@ module.exports = (gl, cvs, browserContext) => {
         program: require('./shader')(gl),
         pixelMatrix: [
             2 / viewportSize.X, 0, 0, 0,
-            0, 2 / viewportSize.Y, 0, 0,
+            0, -2 / viewportSize.Y, 0, 0,
             0, 0, 0, 0,
             0, 0, 0, 1
         ],

@@ -65,5 +65,16 @@
                 }
             }
         ]
+    },
+    "Live2DActor": {
+        "$type": "Live2DActor",
+        "components": [
+            {
+                "$type": "live2d",
+                "params": {
+                    "live2dName": "haru"
+                }
+            }
+        ]
     }
 }
