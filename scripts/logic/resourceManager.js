@@ -1,8 +1,7 @@
 'use strict'
 
-const fs = require('fs')
-
 const _ = require('lodash')
+const http = require('http')
 
 const textureData = require('../data/texture')
 const fontPath = require('../data/font')
@@ -13,6 +12,25 @@ const live2dData = require('../data/live2d')
 function GetPowerOfTwo(value, pow = 1) {
     while (pow < value) pow *= 2
     return pow;
+}
+
+function ReadBinaryFile(filename, doneCb, responseType = 'binary') {
+    http.get(filename, function (res) {
+        var data = [];
+
+        res.on('data', function (chunk) {
+            data.push(chunk);
+        }).on('end', function () {
+            //at this point data is an array of Buffers
+            //so Buffer.concat() can make us a new Buffer
+            //of all of them together
+            var buffer = Buffer.concat(data);
+            if (responseType == 'binary')
+                doneCb(buffer);
+            else if (responseType == 'string')
+                doneCb(buffer.toString('utf-8'));
+        });
+    });
 }
 
 class resourceManager {
@@ -85,6 +103,13 @@ class resourceManager {
         const spine_data = spineData[name]
         this.spineMap.set(name, { src: new Map(), skelatal: spine_data.skelatal })
 
+        ++this.maximumResourceNum;
+        ReadBinaryFile(`${name}/${spine_data.skelatal}`, (skelatal_json) => {
+            this.spineMap.get(name).skelatal = JSON.parse(skelatal_json);
+            ++this.currentResourceNum;
+            console.log('#Loaded SpineSkelatal', name + '/' + spine_data.skelatal)
+        }, 'string')
+
         for (let i = 0, n = spine_data.src.length; i < n; ++i) {
             let img = new Image();
             img.src = `${name}/${spine_data.src[i]}`
@@ -103,9 +128,11 @@ class resourceManager {
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-                this.spineMap.get(name).src.set(_.first(_.split(spine_data.src[i], '.')), { 'Image': img, 'Src': texture })
+
+                const imgKey = _.first(_.split(_.last(_.split(img.src, '/')), '.'))
+                this.spineMap.get(name).src.set(imgKey, { 'Image': img, 'Src': texture })
                 ++this.currentResourceNum;
-                console.log('#Loaded SpineImage', name + '/' + spine_data.src[i])
+                console.log('#Loaded SpineImage', name + '/' + imgKey)
             }
         }
     }
@@ -114,28 +141,36 @@ class resourceManager {
     }
     AddLive2D(name) {
         const live2d_data = live2dData[name]
-        const model_binary = fs.readFileSync(live2d_data.model, 'binary')
-        this.live2dMap.set(name, {src: new Map(), model: model_binary})
+        this.live2dMap.set(name, { src: new Map(), model: null })
+
+        ++this.maximumResourceNum;
+        ReadBinaryFile(live2d_data.model, (model_binary) => {
+            this.live2dMap.get(name).model = model_binary;
+            ++this.currentResourceNum;
+            console.log('#Loaded Live2DModel', name + '/' + live2d_data.model)
+        })
 
         for (var i = 0, n = live2d_data.textures.length; i < n; ++i) {
             let img = new Image();
-            img.src = `${name}/${live2d_data.textures[i]}`
+            img.src = `${live2d_data.textures[i]}`
             ++this.maximumResourceNum;
 
             img.onload = () => {
                 let texture = this.gl.createTexture();
-                this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-                this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
-                this.gl.activeTexture(this.gl.TEXTURE0);
+                // this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
+                // this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
+                // this.gl.activeTexture(this.gl.TEXTURE0);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
                 this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, img);
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
                 this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_NEAREST);
-                this.gl.generateMipmap(this.gl.TEXTURE_2D);
+                // this.gl.generateMipmap(this.gl.TEXTURE_2D);
                 this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-                this.live2dMap.get(name).src.set(_.first(_.split(spine_data.src[i], '.')), { 'Image': img, 'Src': texture })
+
+                const imgKey = _.first(_.split(_.last(_.split(img.src, '/')), '.'))
+                this.live2dMap.get(name).src.set(imgKey, { 'Image': img, 'Src': texture })
                 ++this.currentResourceNum;
-                console.log('#Loaded Live2DImage', name + '/' + live2d_data.textures[i])
+                console.log('#Loaded Live2DImage', name + '/' + imgKey)
             }
         }
     }
