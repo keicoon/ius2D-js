@@ -8,9 +8,14 @@ node,
 express,
 browserify,
 watchify,
-lodash,
+lodash
+```
+
+## Supporting plugins
+```
 howler,
-spine2d
+spine2d,
+live2d
 ```
 
 ## How to start
