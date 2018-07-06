@@ -1,19 +1,19 @@
-#webgl test project
-webgl 2d game?
-
+## ius2D-js
 ![Alt Text](https://github.com/keicoon/require_webgl/blob/master/capture.PNG)
 ![Alt Text](https://github.com/keicoon/require_webgl/blob/master/capture.gif)
-#Dependancy
+
+## Dependancy
 ```
-node
-express
-browserify
-watchify
-lodash
-howler
+node,
+express,
+browserify,
+watchify,
+lodash,
+howler,
 spine2d
 ```
-#Start
+
+## How to start
 * install [node.js](https://nodejs.org/en/)
 * execute setup.bat
 * execute run.bat
