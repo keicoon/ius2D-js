@@ -1,5 +1,6 @@
 ## ius2D-js
 ![](https://github.com/keicoon/require_webgl/blob/master/capture/capture.gif)
+![](https://github.com/keicoon/require_webgl/blob/master/capture/capture2.png)
 
 ## Dependancy
 ```
